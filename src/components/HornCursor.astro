@@ -1,0 +1,26 @@
+---
+
+const HORN_CURSOR = 'resources/horn.cur'
+---
+
+<img id="cursor" src="/img/cursor.png" class="p-6 block"/>
+
+<style is:global>
+    .horn {
+        cursor: 
+            url(/resources/horn.cur) 4 12, 
+            auto; 
+	}
+</style>
+
+<script>
+	import { $ } from "@/lib/dom-selector"
+
+	document.addEventListener("astro:page-load", () => {
+		const $body = $("body");
+		const $cursor = $("#cursor");
+		$cursor.addEventListener("click", () => {
+			$body.classList.toggle("horn")
+		})
+	});
+</script>
