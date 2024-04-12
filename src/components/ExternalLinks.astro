@@ -1,32 +1,50 @@
 ---
-
+const LINKS = [
+    {
+        name: "Spotify",
+        icon: "spotify.svg",
+        url: "https://open.spotify.com/artist/7nb8e3l6zhqbINYKQnjhuO",
+    },
+    {
+        name: "Apple Music",
+        icon: "applemusic.svg",
+        url: "https://music.apple.com/fr/artist/cabrochico/1556888403",
+    },
+    {
+        name: "Youtube",
+        icon: "youtube.svg",
+        url: "https://www.youtube.com/channel/UCIxmuVKCdXoAXUfK_OmyBSQ",
+    },
+    {
+        name: "Instagram",
+        icon: "instagram.svg",
+        url: "https://www.instagram.com/cabrochicoband",
+    },
+    {
+        name: "Facebook",
+        icon: "facebook.svg",
+        url: "https://www.facebook.com/cabrochicoband",
+    },
+];
 ---
 
 <nav class="social-links-nav flex m-auto p-4">
-	<a href="https://open.spotify.com/artist/7nb8e3l6zhqbINYKQnjhuO" target="_blank">
-		<img src = "/img/network/spotify.svg" alt="Logo de Spotify" class=""/>
- 	</a> 
-	<a href="https://music.apple.com/fr/artist/cabrochico/1556888403" target="_blank"> 
-		<img src = "/img/network/applemusic.svg" alt="Logo de Apple Music" class=""/>
-	</a> 
-	
-	<a href="https://www.youtube.com/channel/UCIxmuVKCdXoAXUfK_OmyBSQ" target="_blank"> 
-		<img src = "/img/network/youtube.svg" alt="Logo de Youtube" class=""/>
-	</a>
-	
-	<a href="https://www.instagram.com/cabrochicoband" target="_blank">
-		<img src = "/img/network/instagram.svg" alt="Logo de Intagram" class=""/>
-	</a> 
-	
-	<a href="https://www.facebook.com/cabrochicoband/" target="_blank">
-		<img src = "/img/network/facebook.svg" alt="Logo de Facebook" class=""/>  </a> 
+    {
+        LINKS.map(({ name, icon, url }) => (
+            <a href={url} target="_blank">
+                <img src={`/img/network/${icon}`} alt={`Logo de ${name}`} />
+            </a>
+        ))
+    }
 </nav>
+
 <style>
     a {
         min-width: 48px;
-		padding: 8px;
+        padding: 8px;
     }
-	a > img {
-		filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
-	}
+    a > img {
+        filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg)
+            brightness(118%) contrast(119%);
+    }
 </style>
