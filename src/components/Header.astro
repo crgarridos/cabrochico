@@ -1,27 +1,153 @@
 ---
 interface Props {
-	title: string;
-	body: string;
-	href: string;
+    title: string;
+    body: string;
+    href: string;
 }
 const { href, title, body } = Astro.props;
-import ExternalLinks from '../components/ExternalLinks.astro'
+import ExternalLinks from "../components/ExternalLinks.astro";
+
+const pages = [
+    { name: "Home", href: "/" },
+    { name: "Bio", href: "/bio" },
+    { name: "Concerts", href: "/concerts" },
+    { name: "Contact", href: "/contact" },
+].map((page) => ({
+    ...page,
+    active: Astro.url.pathname === page.href,
+}));
 ---
+
 <header class="p-12 grid place-content-center">
+    <nav
+        class="group flex h-full w-full items-center justify-between px-10 lg:justify-center"
+    >
+        {
+            pages.map(({ name, href, active }, key) => (
+                <>
+                    <a
+                        href={href}
+                        class:list={[
+                            "nav-item relative hidden h-full select-none flex-col items-center justify-center gap-1 text-center text-xl uppercase  lg:flex lg:px-7 xl:px-10",
+                            { "current-page text-[#8ec526]": active },
+                            { "text-white": !active },
+                        ]}
+                        id={`nav-link-${key}`}
+                    >
+                        <span class="z-10">{name}</span>
+                    </a>
+                    {key === 1 && <div class:list={"hidden w-64 lg:block"} />}
+                </>
+            ))
+        }
+    </nav>
 
-	<a href="/">Home</a>
-	<a href="/bio">Bio</a>
-
-	<img src = "/img/cabrochico.svg" alt="Logo CABROCHICO" class=""/>
-	<p class="text-center text-white font-semibold ">
-		Somos cabrochico y queremos jugar!
-	</p>
-	<ExternalLinks/>
+    <img class="mx-auto my-12" src="/img/cabrochico.svg" alt="Logo CABROCHICO" />
+    <p class="text-center text-white font-semibold">
+        Somos cabrochico y queremos jugar!
+    </p>
+    <ExternalLinks />
 </header>
 
 <style>
-	img {
-		width: 450px;
-		height: auto;
-	}
+    img {
+        width: 450px;
+        height: auto;
+    }
+    a {
+    }
+
+    /* MEnu */
+
+    .nav-item .background {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(221, 221, 221, 20%) 0%,
+            transparent 100%
+        );
+        transition: opacity 0.3s;
+    }
+
+    .nav-item:hover .background,
+    .nav-item:focus .background {
+        opacity: 1;
+    }
+
+    .focus-within-ring {
+        @apply focus-within:ring-1 focus-within:ring-white focus-within:ring-offset-1;
+    }
+
+    .nav-item {
+        accent-color: #8ec526;
+    }
+
+    #menuMobileContent {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        scrollbar-gutter: stable;
+    }
+
+    #menuMobileContent.open {
+        opacity: 1 !important;
+        pointer-events: all;
+    }
+
+    .accent-drop-shadow {
+        filter: drop-shadow(0px 0px 25px rgba(var(--color-accent-rgb), 0.25));
+    }
+
+    .current-page {
+    }
+    .current-page:before {
+        background: var(--color-accent);
+        width: 100%;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 8px;
+    }
+
+    .current-page-mob:before {
+        background: var(--color-accent);
+        width: 10px;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        height: 10px;
+        border-radius: 100%;
+        transform: translateY(-50%);
+    }
+
+    .gridBottomBarContainer {
+        grid-template-columns: 1fr 6rem 1fr;
+        grid-template-rows: 4px;
+    }
+
+    @media (min-width: 1024px) {
+        .gridBottomBarContainer {
+            grid-template-columns: 1fr 9rem 1fr;
+        }
+    }
+    @media (prefers-reduced-motion) {
+        .nav-item .background {
+            transition: opacity 0s;
+        }
+
+        .nav-item:hover .background,
+        .nav-item:focus .background {
+            opacity: 1;
+        }
+
+        #menuMobileContent {
+            transition: opacity 0s;
+        }
+    }
 </style>

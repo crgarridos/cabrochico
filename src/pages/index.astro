@@ -1,63 +1,72 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
-import RoundButton from '../components/RoundButton.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import RoundButton from "../components/RoundButton.astro";
 ---
 
 <Layout title="Sitio oficial de CABROCHICO.">
-		<img src = "/img/fotomitterie.webp" alt="Foto del grupo"/>	
-		<p class="instructions mt-8">
-			2020...En el sucio subsuelo del viejo edificio público donde trabajaban, un par de sujetos hacían canciones a escondidas para matar el aburrimiento. De ese puñado de historias nace CABROCHICO.
-		</p>
+  <img src="/img/fotomitterie.webp" alt="Foto del grupo" />
+  <p class="instructions mt-8">
+    2020...En el sucio subsuelo del viejo edificio público donde trabajaban, un
+    par de sujetos hacían canciones a escondidas para matar el aburrimiento. De
+    ese puñado de historias nace CABROCHICO.
+  </p>
 
-		<article class="grid w-full grid-cols-2 gap-4">
-			<img src="/img/revenga cover.png"/>
-			<div >
-				<h2 class=" text-2xl font-bold mb-4">REVENGA! // LAST ALBUM</h2>
+  <article class="grid w-full grid-cols-2 gap-4">
+    <img src="/img/revenga cover.png" />
+    <div>
+      <h2 class="text-2xl font-bold mb-4">REVENGA! // LAST ALBUM</h2>
 
-				<a href="">
-					<img src="/img/spotify-logo.svg" class="inline-block h-[30px] mt-[3px]"/>
-				</a>
-				<a href="">
-					<img src="/img/apple-music-logo.svg" class="inline-block h-[23px] ml-[10px]"/>
-				</a>
+      <a href="">
+        <img
+          src="/img/spotify-logo.svg"
+          class="inline-block h-[30px] mt-[3px]"
+        />
+      </a>
+      <a href="">
+        <img
+          src="/img/apple-music-logo.svg"
+          class="inline-block h-[23px] ml-[10px]"
+        />
+      </a>
 
-				<RoundButton>LISTEN NOW</RoundButton>
+      <RoundButton>LISTEN NOW</RoundButton>
+    </div>
+  </article>
 
-			</div>
-		</article>
+  <h1 class="mt-24 mb-4 font-bold text-3xl">{"// VIDEO //"}</h1>
 
-		<h1 class="mt-24 mb-4 font-bold text-3xl">{"// VIDEO //"}</h1>
+  <!-- <section class="grid col-1 place-items-center"> -->
 
-		<!-- <section class="grid col-1 place-items-center"> -->
-
-			<iframe class="w-full h-auto aspect-video mb-4"
-				src="https://www.youtube-nocookie.com/embed/OvW8sQG0tpk?si=iY-4JKLVwaUT7aRi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
-				loading="lazy">
-			</iframe>
-			<!-- <iframe class="w-full h-auto aspect-video mb-4"
+  <iframe
+    class="w-full h-auto aspect-video mb-4"
+    src="https://www.youtube-nocookie.com/embed/OvW8sQG0tpk?si=iY-4JKLVwaUT7aRi"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+    loading="lazy"
+  >
+  </iframe>
+  <!-- <iframe class="w-full h-auto aspect-video mb-4"
 				src="https://www.youtube-nocookie.com/embed/_VgcRfb5_c4?si=ruybkEEUX3rt9bcM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 			</iframe>
 		
 			<RoundButton href="https://www.youtube.com/@cabrochicoband">WATCH MORE</RoundButton>
 		</section> -->
 
+  <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
 
-		<h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
+  <RoundButton>SEE PAST</RoundButton>
+  l
+  <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONTACT //"}</h1>
 
+  <p>want to reach out? wanna buy some merch ? want to share a love story ?</p>
 
-		<RoundButton>SEE PAST</RoundButton>
-l
-		<h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONTACT //"}</h1>
+  <RoundButton>CONTACT US</RoundButton>
 
-		<p>
-			want to reach out? wanna buy some merch ? want to share a love story ?
-		</p>
-
-		<RoundButton>CONTACT US</RoundButton>
-
-
-		<!-- <ul role="list" class="link-card-grid">
+  <!-- <ul role="list" class="link-card-grid">
 			<Card
 				href="https://docs.astro.build/"
 				title="Documentation"
@@ -82,27 +91,29 @@ l
 </Layout>
 
 <style>
-	
-	.instructions {
-		margin-top: 2rem;
-		margin-bottom: 2rem;
-		border: 1px solid rgba(var(--accent-light), 25%);
-		background: linear-gradient(rgba(var(--accent-dark), 66%), rgba(var(--accent-dark), 33%));
-		padding: 1.5rem;
-		border-radius: 8px;
-	}
-	.instructions code {
-		/* font-size: 0.8em; */
-		font-weight: bold;
-		background: rgba(var(--accent-light), 12%);
-		color: rgb(var(--accent-light));
-		border-radius: 4px;
-		padding: 0.3em 0.4em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent-light));
-	}
-	/*.link-card-grid {
+  .instructions {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(var(--accent-light), 25%);
+    background: linear-gradient(
+      rgba(var(--accent-dark), 66%),
+      rgba(var(--accent-dark), 33%)
+    );
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .instructions code {
+    /* font-size: 0.8em; */
+    font-weight: bold;
+    background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
+    border-radius: 4px;
+    padding: 0.3em 0.4em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent-light));
+  }
+  /*.link-card-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
 		gap: 2rem;
