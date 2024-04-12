@@ -1,14 +1,27 @@
+---
+interface Props {
+	title: string;
+	href: string;
+	class?: string
+}
+
+const { href, title, class: className } = Astro.props;
+---
 <a
+  href={href}
   role="button"
-  class="block
-        mt-4
+  class={`
+        block
         text-nowrap whitespace-nowrap
         text-center
         max-w-fit
-        bg-black hover:bg-black-700
+        transition duration-200 ease-in-out
+        bg-black hover:bg-[#112c16]
         text-white font-semibold text-xl
         px-4 py-2
-        border rounded-full"
+        border rounded-full
+        ${className}
+  `}
 >
-  <span><slot /></span>
+  <span>{title}</span>
 </a>
