@@ -1,4 +1,5 @@
 ---
+import { BASE } from "../constants";
 import Layout from "../layouts/Layout.astro";
 import RoundButton from "../components/RoundButton.astro";
 ---
@@ -8,7 +9,7 @@ import RoundButton from "../components/RoundButton.astro";
     <!-- LAST ALBUM -->
 
     <article class="grid w-full grid-cols-2 gap-4">
-        <img src="/img/revenga cover.png" />
+        <img src=`${BASE}/img/revenga cover.png` />
         <div class="p-4 items-center">
             <h2 class="text-2xl font-bold mb-4">REVENGA! // LAST ALBUM</h2>
 
@@ -17,13 +18,13 @@ import RoundButton from "../components/RoundButton.astro";
                     href="https://open.spotify.com/album/1nM3ZpxapPEZX7gQqXucxq?si=6nksRsbTRDCDPKM-COpVbA"
                 >
                     <img
-                        src="/img/spotify-logo.svg"
+                        src=`${BASE}/img/spotify-logo.svg`
                         class="inline-block h-[30px] mt-[6px]"
                     />
                 </a>
                 <a href="https://music.apple.com/us/album/revenga/1713025897">
                     <img
-                        src="/img/apple-music-logo.svg"
+                        src=`${BASE}/img/apple-music-logo.svg`
                         class="inline-block h-[23px] ml-[10px]"
                     />
                 </a>

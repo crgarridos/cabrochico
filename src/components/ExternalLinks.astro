@@ -1,4 +1,5 @@
 ---
+import { BASE } from "../constants";
 const LINKS = [
     {
         name: "Spotify",
@@ -32,7 +33,7 @@ const LINKS = [
     {
         LINKS.map(({ name, icon, url }) => (
             <a href={url} target="_blank">
-                <img src={`/img/network/${icon}`} alt={`Logo de ${name}`} />
+                <img src={`${BASE}/img/network/${icon}`} alt={`Logo de ${name}`} />
             </a>
         ))
     }

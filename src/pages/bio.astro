@@ -1,4 +1,5 @@
 ---
+import { BASE } from "../constants";
 import Layout from "../layouts/Layout.astro";
 
 const BIO = `
@@ -9,7 +10,7 @@ Cabrochico embodies the thrill of playing relentlessly and ensuring that the aud
 ---
 
 <Layout title="Biografia de CABROCHICO">
-    <img src="/img/cc-four-pink.jpeg" />
+    <img src=`${BASE}/img/cc-four-pink.jpeg` />
     <article class="bio mt-8">
         {BIO.split("\n").map((line) => line.length > 0 && <p>{line}</p>)}
     </article>

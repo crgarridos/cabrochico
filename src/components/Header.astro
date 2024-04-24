@@ -1,5 +1,6 @@
 ---
 import ExternalLinks from "../components/ExternalLinks.astro";
+import { BASE } from "../constants.js";
 
 const pages = [
     { name: "Home", href: "/" },
@@ -20,7 +21,7 @@ const pages = [
             pages.map(({ name, href, active }, key) => (
                 <>
                     <a
-                        href={href}
+                        href={BASE + href}
                         class:list={[
                             "nav-item relative hidden h-full select-none flex-col items-center justify-center gap-1 text-center text-xl uppercase  lg:flex lg:px-7 xl:px-10",
                             { "current-page text-[#8ec526]": active },
@@ -36,7 +37,7 @@ const pages = [
         }
     </nav>
 
-    <img class="mx-auto my-12" src="/img/cabrochico.svg" alt="Logo CABROCHICO" />
+    <img class="mx-auto my-12" src=`${BASE}/img/cabrochico.svg` alt="Logo CABROCHICO" />
     <p class="text-center text-white font-semibold">
         Somos cabrochico y queremos jugar!
     </p>
