@@ -12,36 +12,31 @@ const { yyyyMMdd, place, city, bands } = Astro.props;
 const hasOtherBands = Array.isArray(bands) && bands.length;
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
-    dateStyle: "full",
+    dateStyle: "short",
     timeZone: "Europe/Paris",
 });
 ---
 
 <article class="flex flex-row">
-    <section>
-        <h2 class="date">
+    <p>
+        <span class="date">
             {DATE_FORMATTER.format(Date.parse(yyyyMMdd))}
-        </h2>
-        <h2 class="place">
-            {place} - <span>{city}</span>
-        </h2>
+        </span>
+        <span class="place">
+        • {city.toUpperCase()} • {place}
+        </span>
         {
             hasOtherBands && (
-                <div class="bands">
-                    <h2>Other bands:</h2>
-                    <ul>
-                        {bands.map((bandName) => (
-                            <li>· {bandName}</li>
-                        ))}
-                    </ul>
-                </div>
+                <span class="bands">
+                    {bands.map((bandName) => <span> + { bandName }</span>)}
+                </span>
             )
         }
-    </section>
+    </p>
 </article>
 
 <style>
-  .date {
-      text-transform: capitalize;
-  }
+    .date {
+        text-transform: capitalize;
+    }
 </style>

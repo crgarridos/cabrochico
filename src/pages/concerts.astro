@@ -4,6 +4,18 @@ import Concert from "../components/Concert.astro";
 
 const CONCERTS = [
     {
+        date: "2024-04-18",
+        place: "La Griffe",
+        city: "Lille",
+        bands: ["Misskeen", "Fire Life"],
+    },
+    {
+        date: "2024-04-07",
+        place: "Tattoo Hippie Club",
+        city: "Dunkerque",
+        bands: ["Misskeen"],
+    },
+    {
         date: "2024-03-15",
         place: "Le Bidule",
         city: "Lille",
@@ -43,34 +55,33 @@ const CONCERTS = [
         place: "Yeti Bar",
         city: "Lille",
         bands: ["Stuck In Yesterday"],
+        source: "https://www.facebook.com/events/1909633439414041/",
     },
     {
         date: "2022-10-14",
         place: "Centre Culturel Libertaire",
         city: "Lille",
         bands: ["Slowkiss", "Wired"],
+        source: "https://www.facebook.com/events/654583165880514/",
     },
     {
         date: "2022-09-16",
         place: "Le plateau du Fresnoy",
         city: "Tourcoing",
         bands: ["Glory holes & the geniters", "Les vielles bites"],
+        source: "https://www.facebook.com/events/485848579712410/",
     },
-];
-
-
+].toSorted((c1, c2) => {
+    const d1 = parseInt(c1.date.replace(/-/g, ""));
+    const d2 = parseInt(c2.date.replace(/-/g, ""));
+    return d2 - d1; // Sorted by date DESC
+});
 ---
 
 <Layout title="Concerts">
-    <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
+    <h1 class="mt-24 mb-16 font-bold text-3xl">{"// PAST CONCERTS //"}</h1>
     {
-        CONCERTS
-        .toSorted((c1, c2) => {
-          const d1 = parseInt(c1.date.replace(/-/g, ""))
-          const d2 = parseInt(c2.date.replace(/-/g, ""))
-          return d2 - d1 // DESC
-        })
-        .map(({ date, place, city, bands }) => (
+        CONCERTS.map(({ date, place, city, bands, source }) => (
             <div class="mb-4">
                 <Concert
                     yyyyMMdd={date}
@@ -85,6 +96,7 @@ const CONCERTS = [
 
 <style>
     article {
+        /* Useless */
         @apply mb-4 mt-4;
     }
 </style>
