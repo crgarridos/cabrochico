@@ -2,33 +2,28 @@
 import { map } from "astro/zod";
 
 interface Props {
-    yyyyMMdd: string;
+    highlightSize?: boolean;
+    formattedDate: string;
     place: string;
     city: string;
     bands?: string[];
 }
 
-const { yyyyMMdd, place, city, bands } = Astro.props;
+const { formattedDate, place, city, bands, highlightSize } = Astro.props;
 const hasOtherBands = Array.isArray(bands) && bands.length;
-
-const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
-    dateStyle: "short",
-    timeZone: "Europe/Paris",
-});
 ---
 
-<article class="flex flex-row">
+<article class={`${highlightSize || false ? "highlight": "flex flex-row"}`}>
     <p>
-        <span class="date">
-            {DATE_FORMATTER.format(Date.parse(yyyyMMdd))}
-        </span>
-        <span class="place">
-        • {city.toUpperCase()} • {place}
-        </span>
+        <span class="date">{formattedDate}</span>
+        <span class="city">{city.toUpperCase()}</span>
+        <span class="place">{place}</span>
         {
             hasOtherBands && (
                 <span class="bands">
-                    {bands.map((bandName) => <span> + { bandName }</span>)}
+                    {bands.map((bandName) => (
+                        <span> + {bandName}</span>
+                    ))}
                 </span>
             )
         }
@@ -36,7 +31,30 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
 </article>
 
 <style>
+    .highlight {
+      @apply text-3xl text-center uppercase
+    }
+    .highlight .date, .highlight .bands {
+      display: block;
+
+    }
+    .highlight .place, .highlight .city {
+
+    }
     .date {
         text-transform: capitalize;
     }
+    .place {
+        @apply font-semibold;
+    }
+
+    .city::before, .place::before {
+      content: " • "
+    }
+
+    .highlight .city::before {
+      content: ""
+    }
+
+
 </style>

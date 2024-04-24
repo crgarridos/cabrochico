@@ -4,6 +4,12 @@ import Concert from "../components/Concert.astro";
 
 const CONCERTS = [
     {
+        date: "2024-06-22",
+        place: "Le Bidule",
+        city: "Lille",
+        bands: ["Los locos de Paris"],
+    },
+    {
         date: "2024-04-18",
         place: "La Griffe",
         city: "Lille",
@@ -76,15 +82,55 @@ const CONCERTS = [
     const d2 = parseInt(c2.date.replace(/-/g, ""));
     return d2 - d1; // Sorted by date DESC
 });
+
+const NOW = new Date();
+const FUTURE_CONCERTS = CONCERTS.filter(
+    ({ date }) => new Date(Date.parse(date)) > NOW
+);
+const HAS_FUTURE_CONCERTS = FUTURE_CONCERTS.length;
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "short",
+    timeZone: "Europe/Paris",
+});
+const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "full",
+    timeZone: "Europe/Paris",
+});
 ---
 
 <Layout title="Concerts">
-    <h1 class="mt-24 mb-16 font-bold text-3xl">{"// PAST CONCERTS //"}</h1>
+    {
+        HAS_FUTURE_CONCERTS && (
+            <h1 class="mt-8 font-bold text-3xl text-center">
+                {"⚡️ FUTURE CONCERTS ⚡️"}
+            </h1>
+        )
+    }
+    {
+        HAS_FUTURE_CONCERTS &&
+            FUTURE_CONCERTS.map(({ date, place, city, bands, source }) => (
+                <div class="mt-16">
+                    <Concert
+                        highlightSize={true}
+                        formattedDate={FULL_DATE_FORMATTER.format(Date.parse(date))}
+                        place={place}
+                        city={city}
+                        bands={bands}
+                    />
+                </div>
+            ))
+    }
+    {
+        HAS_FUTURE_CONCERTS && <div class="mb-24"></div>
+    }
+
+    <h1 class="mb-16 font-bold text-3xl">{"// PAST CONCERTS"}</h1>
     {
         CONCERTS.map(({ date, place, city, bands, source }) => (
             <div class="mb-4">
                 <Concert
-                    yyyyMMdd={date}
+                    formattedDate={DATE_FORMATTER.format(Date.parse(date))}
                     place={place}
                     city={city}
                     bands={bands}
@@ -93,10 +139,3 @@ const CONCERTS = [
         ))
     }
 </Layout>
-
-<style>
-    article {
-        /* Useless */
-        @apply mb-4 mt-4;
-    }
-</style>
