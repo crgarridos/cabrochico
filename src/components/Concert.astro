@@ -1,0 +1,47 @@
+---
+import { map } from "astro/zod";
+
+interface Props {
+    yyyyMMdd: string;
+    place: string;
+    city: string;
+    bands?: string[];
+}
+
+const { yyyyMMdd, place, city, bands } = Astro.props;
+const hasOtherBands = Array.isArray(bands) && bands.length;
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "full",
+    timeZone: "Europe/Paris",
+});
+---
+
+<article class="flex flex-row">
+    <section>
+        <h2 class="date">
+            {DATE_FORMATTER.format(Date.parse(yyyyMMdd))}
+        </h2>
+        <h2 class="place">
+            {place} - <span>{city}</span>
+        </h2>
+        {
+            hasOtherBands && (
+                <div class="bands">
+                    <h2>Other bands:</h2>
+                    <ul>
+                        {bands.map((bandName) => (
+                            <li>· {bandName}</li>
+                        ))}
+                    </ul>
+                </div>
+            )
+        }
+    </section>
+</article>
+
+<style>
+  .date {
+      text-transform: capitalize;
+  }
+</style>

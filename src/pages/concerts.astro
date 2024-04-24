@@ -1,0 +1,90 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Concert from "../components/Concert.astro";
+
+const CONCERTS = [
+    {
+        date: "2024-03-15",
+        place: "Le Bidule",
+        city: "Lille",
+        bands: ["Misskeen"],
+    },
+    {
+        date: "2024-01-27",
+        place: "Amul Solo",
+        city: "Lille",
+        bands: ["Kenmujo"],
+    },
+    {
+        date: "2023-10-28",
+        place: "Arena Bar",
+        city: "Lille",
+        bands: ["Misskeen"],
+    },
+    {
+        date: "2023-10-14",
+        place: "Amul Solo",
+        city: "Lille",
+        bands: ["Sea Horse Shoe"],
+    },
+    {
+        date: "2023-07-06",
+        place: "Centre Culturel Libertaire",
+        city: "Lille",
+        bands: ["Slowkiss", "Eastern Trade"],
+    },
+    {
+        date: "2023-06-16",
+        place: "Le Distrot",
+        city: "Lille",
+    },
+    {
+        date: "2023-06-11",
+        place: "Yeti Bar",
+        city: "Lille",
+        bands: ["Stuck In Yesterday"],
+    },
+    {
+        date: "2022-10-14",
+        place: "Centre Culturel Libertaire",
+        city: "Lille",
+        bands: ["Slowkiss", "Wired"],
+    },
+    {
+        date: "2022-09-16",
+        place: "Le plateau du Fresnoy",
+        city: "Tourcoing",
+        bands: ["Glory holes & the geniters", "Les vielles bites"],
+    },
+];
+
+
+---
+
+<Layout title="Concerts">
+    <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
+    {
+        CONCERTS
+        .toSorted((c1, c2) => {
+          const d1 = parseInt(c1.date.replace(/-/g, ""))
+          const d2 = parseInt(c2.date.replace(/-/g, ""))
+          return d2 - d1 // DESC
+        })
+        .map(({ date, place, city, bands }) => (
+            <div class="mb-4">
+                <Concert
+                    yyyyMMdd={date}
+                    place={place}
+                    city={city}
+                    bands={bands}
+                />
+            </div>
+        ))
+    }
+</Layout>
+
+<style>
+    article {
+        @apply mb-4 mt-4;
+    }
+</style>
