@@ -4,8 +4,10 @@ import { BASE } from "../constants.js";
 
 const pages = [
     { name: "Home", href: "/" },
+    // { name: "Gallery", href: "/gallery" },
     { name: "Bio", href: "/bio" },
     { name: "Concerts", href: "/concerts" },
+    // { name: "Goodies", href: "/goodies" },
     { name: "Contact", href: "/contact" },
 ].map((page) => ({
     ...page,
@@ -23,7 +25,7 @@ const pages = [
                     <a
                         href={BASE + href}
                         class:list={[
-                            "nav-item relative hidden h-full select-none flex-col items-center justify-center gap-1 text-center text-xl uppercase  lg:flex lg:px-7 xl:px-10",
+                            "nav-item relative h-full select-none mx-2 flex-col items-center justify-center gap-1 text-center text-xl uppercase lg:flex lg:px-7 xl:px-10",
                             { "current-page text-[#8ec526]": active },
                             { "text-white": !active },
                         ]}
@@ -31,7 +33,7 @@ const pages = [
                     >
                         <span class="z-10">{name}</span>
                     </a>
-                    {key === 1 && <div class:list={"hidden w-64 lg:block"} />}
+                    {key === 2 && <div class:list={"hidden w-64 md:block"} />}
                 </>
             ))
         }
@@ -73,24 +75,8 @@ const pages = [
         opacity: 1;
     }
 
-    .focus-within-ring {
-        @apply focus-within:ring-1 focus-within:ring-white focus-within:ring-offset-1;
-    }
-
     .nav-item {
         accent-color: #8ec526;
-    }
-
-    #menuMobileContent {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-        scrollbar-gutter: stable;
-    }
-
-    #menuMobileContent.open {
-        opacity: 1 !important;
-        pointer-events: all;
     }
 
     .accent-drop-shadow {
@@ -128,7 +114,7 @@ const pages = [
 
     @media (min-width: 1024px) {
         .gridBottomBarContainer {
-            grid-template-columns: 1fr 9rem 1fr;
+            grid-template-columns: repeat(auto-fill);
         }
     }
     @media (prefers-reduced-motion) {
@@ -139,10 +125,6 @@ const pages = [
         .nav-item:hover .background,
         .nav-item:focus .background {
             opacity: 1;
-        }
-
-        #menuMobileContent {
-            transition: opacity 0s;
         }
     }
 </style>

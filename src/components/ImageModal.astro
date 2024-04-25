@@ -1,0 +1,101 @@
+---
+const { id } = Astro.props;
+---
+
+<style>
+    dialog {
+        &::backdrop {
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(0.25rem);
+        }
+    }
+
+    .close-dialog {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: white;
+        padding: 0.5rem;
+    }
+
+    dialog[open] {
+        animation: fade 0.5s forwards;
+    }
+    dialog:not([open]) {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    @keyframes fade {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    svg {
+        width: 16px;
+    }
+</style>
+
+<dialog class="image-dialog items-center justify-center">
+    <div class="relative bg-white px-4 py-2 pb-4">
+        <button type="button" class="close-dialog">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+            >
+                <path
+                    stroke="#000"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+            </svg>
+        </button>
+
+        <img class="image-full h-auto object-scale-down" src="" />
+    </div>
+</dialog>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const $imageContainer = document.querySelectorAll(".image-container");
+        const $imageDialog = document.querySelector(
+            ".image-dialog"
+        ) as HTMLDialogElement;
+        const $closeButton = document.querySelector(".close-dialog");
+        const imgFull = document.querySelector(".image-full");
+
+        if (!$imageDialog) return;
+
+        $imageDialog.addEventListener("close", () => {
+            imgFull?.setAttribute("src", "");
+        });
+
+        $closeButton?.addEventListener("click", () => $imageDialog.close());
+
+        $imageDialog.addEventListener("click", (event) => {
+            const target = event.target as HTMLElement;
+            if (target === $imageDialog) $imageDialog.close();
+        });
+
+        $imageContainer?.forEach((el) => {
+            el.addEventListener("click", async (event) => {
+                const currentTarget = event.currentTarget as HTMLElement;
+                const { url } = currentTarget.dataset;
+                if (!url) return;
+                console.log("ready");
+                imgFull?.setAttribute("src", `${url}`);
+                $imageDialog.showModal();
+            });
+        });
+    });
+</script>

@@ -1,0 +1,79 @@
+---
+const { id } = Astro.props;
+---
+
+<style>
+    dialog {
+        position: fixed;
+        width: inherit;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        &::backdrop {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(0.25rem);
+        }
+    }
+    article {
+      /* background-color: red; */
+      box-shadow: rgba(0, 0, 255, 1) 0px 7px 29px 0px;
+      padding: 0;
+    }
+    .close-dialog {
+        position: fixed;
+        top: .5rem;
+        right: .5rem;
+        background-color: white;
+        color: black;
+        content: "x"
+    }
+    .opener {
+        cursor: pointer;
+    }
+    dialog[open] {
+        animation: fade 0.5s forwards;
+    }
+    dialog:not([open]) {
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    @keyframes fade {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
+
+<dialog id={id} onclick={`document.getElementById('${id}').close()`}>
+    <article id=`${id}-content` class="">
+        <form method="dialog">
+            <div class="close-dialog">
+                <slot name="close">
+                    <button>x</button>
+                </slot>
+            </div>
+        </form>
+        <slot name="main" />
+    </article>
+</dialog>
+
+<div class="opener" onclick={`document.getElementById('${id}').showModal()`}>
+    <slot name="opener">
+        <button>Open dialog</button>
+    </slot>
+</div>
+
+<script define:vars={{ id }}>
+    const content = document.getElementById(`${id}-content`);
+    content.addEventListener("click", (event) => event.stopPropagation()); // Prevent closing when interacting with the content
+</script>
