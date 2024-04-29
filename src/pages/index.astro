@@ -5,13 +5,17 @@ import RoundButton from "../components/RoundButton.astro";
 ---
 
 <Layout title="Sitio oficial de CABROCHICO.">
-
     <!-- LAST ALBUM -->
 
     <article class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-0 sm:mt-4">
-        <img src=`${BASE}/img/revenga cover.webp` class=" max-w-[80%] sm:max-w-full mx-auto sm:mx-0"/>
+        <img
+            src=`${BASE}/img/revenga cover.webp`
+            class="max-w-[80%] sm:max-w-full mx-auto sm:mx-0"
+        />
         <div class="items-center w-full">
-            <h2 class="text-2xl font-bold mb-4 text-center sm:text-justify">REVENGA! // LAST ALBUM</h2>
+            <h2 class="text-2xl font-bold mb-4 text-center sm:text-start">
+                REVENGA! // LAST ALBUM
+            </h2>
 
             <div class="mt-4 text-center sm:text-start">
                 <a
@@ -59,15 +63,22 @@ import RoundButton from "../components/RoundButton.astro";
     />
 
     <!-- CONCERTS -->
-
+    <!--
     <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
     <RoundButton href="" title="SEE PAST" />
+    -->
 
     <!-- CONTACT -->
 
-    <h1 class="mt-24 mb-4 font-bold text-3xl text-center sm:text-start">{"// CONTACT //"}</h1>
+    <h1 class="mt-24 mb-4 font-bold text-3xl text-center sm:text-start">
+        {"// CONTACT //"}
+    </h1>
     <p class="text-center sm:text-start">
         want to reach out? wanna buy some merch ? want to share a love story ?
     </p>
-    <RoundButton class="mt-8 mx-auto sm:mx-0" href="https://ig.me/m/cabrochicoband" title="CONTACT US" />
+    <RoundButton
+        class="mt-8 mx-auto sm:mx-0"
+        href="https://ig.me/m/cabrochicoband"
+        title="CONTACT US"
+    />
 </Layout>
