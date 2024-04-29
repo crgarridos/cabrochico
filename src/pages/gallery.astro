@@ -37,7 +37,7 @@ function hashCode(str) {
         {
             IMGS.map((src) => (
                 <button class="image-container thumbnail" data-url={src}>
-                    <img src={src} class="block opacity-0 transition-opacity" onload="this.style.opacity=1" />
+                    <img src={src} class="block opacity-0 transition-opacity" onload="this.style.opacity=1" loading="eager" />
                 </button>
             ))
         }
