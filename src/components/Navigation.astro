@@ -1,0 +1,54 @@
+---
+import {
+    Astronav,
+    MenuItems,
+    MenuIcon,
+    Dropdown,
+    DropdownItems,
+    DropdownSubmenu,
+} from "astro-navbar";
+import { BASE } from "../constants.js";
+
+const pages = [
+    { name: "Home", href: "/" },
+    { name: "Bio", href: "/bio" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Concerts", href: "/concerts" },
+    // { name: "Goodies", href: "/goodies" },
+    { name: "Contact", href: "/contact" },
+].map((page) => ({
+    ...page,
+    active:
+        Astro.url.pathname === BASE + page.href ||
+        Astro.url.pathname === BASE + page.href + "/" ||
+        (Astro.url.pathname === BASE && page.href === "/"), // workaround for root routing in prod
+}));
+---
+
+<Astronav closeOnClick>
+    <MenuIcon class="w-8 h-8 text-white block sm:hidden" />
+    <MenuItems class="hidden sm:flex">
+        <ul
+            class="flex flex-col gap-3
+                sm:grid sm:grid-cols-[repeat(auto-fit,minmax(100px,1fr))] sm:grid-rows-1
+                sm:mb-12 sm:mx-auto sm:py-4
+                sm:w-[95%] md:w-[80%]"
+        >
+            {
+                pages.map(({ name, href, active }, key) => (
+                    <li class="select-none text-xl uppercase w-full text-center">
+                        <a
+                            href={BASE + href}
+                            class:list={[
+                                { "text-[#8ec526]": active },
+                                { "text-white": !active },
+                            ]}
+                        >
+                            <span>{name}</span>
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </MenuItems>
+</Astronav>
