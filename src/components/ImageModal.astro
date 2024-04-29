@@ -43,11 +43,14 @@ const { id } = Astro.props;
     svg {
         width: 16px;
     }
+    svg:hover {
+        scale: 1.1;
+    }
     img {
-        max-height: 90dvh;
+        max-height: 80dvh;
         height: 100%;
         width: 100%;
-        object-fit: cover;
+        object-fit: fit;
     }
 
 </style>
@@ -69,7 +72,7 @@ const { id } = Astro.props;
             </svg>
         </button>
 
-        <img class="image-full object-contain w-full" src="" />
+        <img class="image-full" src="" />
     </div>
 </dialog>
 
@@ -80,12 +83,12 @@ const { id } = Astro.props;
             ".image-dialog"
         ) as HTMLDialogElement;
         const $closeButton = document.querySelector(".close-dialog");
-        const imgFull = document.querySelector(".image-full");
+        const $imgFull = document.querySelector(".image-full");
 
         if (!$imageDialog) return;
 
         $imageDialog.addEventListener("close", () => {
-            imgFull?.setAttribute("src", "");
+            $imgFull?.setAttribute("src", "");
         });
 
         $closeButton?.addEventListener("click", () => $imageDialog.close());
@@ -101,7 +104,7 @@ const { id } = Astro.props;
                 const { url } = currentTarget.dataset;
                 if (!url) return;
                 console.log("ready");
-                imgFull?.setAttribute("src", `${url}`);
+                $imgFull?.setAttribute("src", `${url}`);
                 $imageDialog.showModal();
             });
         });
