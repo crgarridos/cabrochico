@@ -4,22 +4,25 @@ import { BASE } from "../constants.js";
 
 const pages = [
     { name: "Home", href: "/" },
-    // { name: "Gallery", href: "/gallery" },
     { name: "Bio", href: "/bio" },
+    { name: "Gallery", href: "/gallery" },
     { name: "Concerts", href: "/concerts" },
     // { name: "Goodies", href: "/goodies" },
-    { name: "Contact", href: "/contact" }, // TODO responsive
+    { name: "Contact", href: "/contact" },
 ].map((page) => ({
     ...page,
-    active: Astro.url.pathname === BASE + page.href,
+    active:
+        Astro.url.pathname === BASE + page.href ||
+        Astro.url.pathname === BASE + page.href + "/" ||
+        Astro.url.pathname === BASE && page.href === "/" // workaround for root routing in prod
 }));
 ---
 
 <header class="grid place-content-center mx-auto p-6">
     <nav
-        class="group hidden sm:flex h-full w-full items-center justify-between px-10 lg:justify-center"
+        class="group hidden md:flex h-full w-full items-center justify-between px-10 lg:justify-center"
     >
-    <!-- TODO responsive nav -->
+        <!-- TODO responsive nav -->
         {
             pages.map(({ name, href, active }, key) => (
                 <>
@@ -34,13 +37,18 @@ const pages = [
                     >
                         <span class="z-10">{name}</span>
                     </a>
-                    {key === 1 && <div class:list={"w-64"} />}
+                    {key === 2 && <div class:list={"w-64"} />}
                 </>
             ))
         }
     </nav>
-
-    <img class="mx-auto my-12" src=`${BASE}/img/cabrochico.svg` alt="Logo CABROCHICO" />
+    <a href={BASE}>
+        <img
+        class="mx-auto my-12"
+        src=`${BASE}/img/cabrochico.svg`
+        alt="Logo CABROCHICO"
+        />
+    </a>
     <p class="text-center text-white font-semibold">
         Somos cabrochico y queremos jugar!
     </p>
