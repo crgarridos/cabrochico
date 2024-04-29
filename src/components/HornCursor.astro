@@ -3,13 +3,18 @@ import { BASE } from "../constants";
 const HORN_CURSOR = "resources/horn.cur";
 ---
 
-<img id="cursor" src=`${BASE}/img/cursor.png` class="p-6 hidden absolute md:block right-0 top-0" />
+<img id="cursor" src=`${BASE}/img/cursor.png` class="p-6 block absolute right-0 top-0" />
 
 <style is:global>
     .horn {
         cursor:
             url(/resources/horn.cur) 4 12,
             auto;
+    }
+    @media (hover: none) or (max-width: 768px)  {
+        img#cursor {
+            display: none;
+        }
     }
 </style>
 
