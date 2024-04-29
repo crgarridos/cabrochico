@@ -8,12 +8,12 @@ import RoundButton from "../components/RoundButton.astro";
 
     <!-- LAST ALBUM -->
 
-    <article class="grid w-full grid-cols-2 gap-4">
-        <img src=`${BASE}/img/revenga cover.webp` />
-        <div class="p-4 items-center">
-            <h2 class="text-2xl font-bold mb-4">REVENGA! // LAST ALBUM</h2>
+    <article class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-0 sm:mt-4">
+        <img src=`${BASE}/img/revenga cover.webp` class=" max-w-[80%] sm:max-w-full mx-auto sm:mx-0"/>
+        <div class="items-center w-full">
+            <h2 class="text-2xl font-bold mb-4 text-center sm:text-justify">REVENGA! // LAST ALBUM</h2>
 
-            <div class="mt-4">
+            <div class="mt-4 text-center sm:text-justify">
                 <a
                     href="https://open.spotify.com/album/1nM3ZpxapPEZX7gQqXucxq?si=6nksRsbTRDCDPKM-COpVbA"
                 >
@@ -31,7 +31,7 @@ import RoundButton from "../components/RoundButton.astro";
             </div>
 
             <RoundButton
-                class="mt-6"
+                class="mt-6 mx-auto sm:mx-0"
                 href="https://artists.landr.com/064837126494"
                 title="LISTEN NOW"
             />
@@ -50,7 +50,7 @@ import RoundButton from "../components/RoundButton.astro";
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin"
         allowfullscreen
-        loading="lazy"
+        loading="eager"
     >
     </iframe>
     <RoundButton

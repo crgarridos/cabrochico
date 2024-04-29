@@ -8,17 +8,18 @@ const pages = [
     { name: "Bio", href: "/bio" },
     { name: "Concerts", href: "/concerts" },
     // { name: "Goodies", href: "/goodies" },
-    { name: "Contact", href: "/contact" },
+    { name: "Contact", href: "/contact" }, // TODO responsive
 ].map((page) => ({
     ...page,
     active: Astro.url.pathname === BASE + page.href,
 }));
 ---
 
-<header class="p-12 grid place-content-center">
+<header class="grid place-content-center mx-auto p-6">
     <nav
-        class="group flex h-full w-full items-center justify-between px-10 lg:justify-center"
+        class="group hidden sm:flex h-full w-full items-center justify-between px-10 lg:justify-center"
     >
+    <!-- TODO responsive nav -->
         {
             pages.map(({ name, href, active }, key) => (
                 <>
@@ -33,7 +34,7 @@ const pages = [
                     >
                         <span class="z-10">{name}</span>
                     </a>
-                    {key === 2 && <div class:list={"hidden w-64 md:block"} />}
+                    {key === 1 && <div class:list={"w-64"} />}
                 </>
             ))
         }
@@ -48,6 +49,7 @@ const pages = [
 
 <style>
     img {
+        max-width: 75%;
         width: 450px;
         height: auto;
     }

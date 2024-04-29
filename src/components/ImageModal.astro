@@ -4,6 +4,7 @@ const { id } = Astro.props;
 
 <style>
     dialog {
+        max-width: 80%;
         &::backdrop {
             top: 0px;
             right: 0px;
@@ -42,10 +43,17 @@ const { id } = Astro.props;
     svg {
         width: 16px;
     }
+    img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+
+}
+
 </style>
 
 <dialog class="image-dialog items-center justify-center">
-    <div class="relative bg-white px-4 py-2 pb-4">
+    <div class="relative bg-white p-2 max-w-full h-auto">
         <button type="button" class="close-dialog">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +69,7 @@ const { id } = Astro.props;
             </svg>
         </button>
 
-        <img class="image-full h-auto object-scale-down" src="" />
+        <img class="image-full object-contain w-full" src="" />
     </div>
 </dialog>
 

@@ -89,6 +89,11 @@ const FUTURE_CONCERTS = CONCERTS.filter(
 );
 const HAS_FUTURE_CONCERTS = FUTURE_CONCERTS.length;
 
+const PAST_CONCERTS = CONCERTS.filter(
+    ({ date }) => new Date(Date.parse(date)) < NOW
+);
+
+
 const DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
     dateStyle: "short",
     timeZone: "Europe/Paris",
@@ -102,7 +107,7 @@ const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
 <Layout title="Concerts">
     {
         HAS_FUTURE_CONCERTS && (
-            <h1 class="mt-8 font-bold text-3xl text-center">
+            <h1 class="mt-8 font-bold md:text-3xl text-2xl text-center">
                 {"⚡️ FUTURE CONCERTS ⚡️"}
             </h1>
         )
@@ -110,7 +115,7 @@ const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
     {
         HAS_FUTURE_CONCERTS &&
             FUTURE_CONCERTS.map(({ date, place, city, bands, source }) => (
-                <div class="mt-16">
+                <div class="mt-8 md:mt-12">
                     <Concert
                         highlightSize={true}
                         formattedDate={FULL_DATE_FORMATTER.format(Date.parse(date))}
@@ -125,9 +130,9 @@ const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
         HAS_FUTURE_CONCERTS && <div class="mb-24"></div>
     }
 
-    <h1 class="mb-16 font-bold text-3xl">{"// PAST CONCERTS"}</h1>
+    <h1 class="mb-8 font-bold md:text-3xl text-2xl">{"// PAST CONCERTS"}</h1>
     {
-        CONCERTS.map(({ date, place, city, bands, source }) => (
+        PAST_CONCERTS.map(({ date, place, city, bands, source }) => (
             <div class="mb-4">
                 <Concert
                     formattedDate={DATE_FORMATTER.format(Date.parse(date))}
