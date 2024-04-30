@@ -101,7 +101,8 @@ const { id } = Astro.props;
         $imageContainer?.forEach((el) => {
             el.addEventListener("click", async (event) => {
                 const currentTarget = event.currentTarget as HTMLElement;
-                const { url } = currentTarget.dataset;
+                const { url } = await currentTarget.dataset;
+                console.log( currentTarget.dataset);
                 if (!url) return;
                 console.log("ready");
                 $imgFull?.setAttribute("src", `${url}`);
