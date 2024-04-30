@@ -2,18 +2,14 @@
 import { BASE } from "../constants";
 import Layout from "../layouts/Layout.astro";
 import RoundButton from "../components/RoundButton.astro";
-
-import { Image } from 'astro:assets';
-import revengaCover from '../assets/img/revenga cover.png';
 ---
 
 <Layout title="Sitio oficial de CABROCHICO.">
     <!-- LAST ALBUM -->
 
     <article class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-0 sm:mt-4">
-        <Image
-            src={revengaCover}
-            alt="Cover of REVENGA!"
+        <img
+            src=`${BASE}/img/revenga cover.webp`
             class="max-w-[80%] sm:max-w-full mx-auto sm:mx-0"
         />
         <div class="items-center w-full">

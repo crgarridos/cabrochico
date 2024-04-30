@@ -1,7 +1,6 @@
 ---
+import { BASE } from "../constants";
 import Layout from "../layouts/Layout.astro";
-import { Image } from 'astro:assets';
-import bioImage from '../assets/img/cc-four-pink.jpeg';
 
 const BIO = `
 CABROCHICO is a punk-rock group known for their high-energy performances. Formed in 2021. Today, the band consists of two guitars, a bass, the drums, and three voices, all hailing from Latin America and residing in Lille, France.
@@ -11,7 +10,7 @@ Cabrochico embodies the thrill of playing relentlessly and ensuring that the aud
 ---
 
 <Layout title="Biografia de CABROCHICO">
-    <Image src={bioImage} alt="Picture of all members" />
+    <img src=`${BASE}/img/cc-four-pink.jpeg` />
     <article class="bio mt-8">
         {BIO.split("\n").map((line) => line.length > 0 && <p>{line}</p>)}
     </article>
