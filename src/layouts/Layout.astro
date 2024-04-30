@@ -4,6 +4,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const description = "Sitio oficial de CABROCHICO"
+const image = "img/cc-four-pink.jpeg"
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
@@ -14,9 +16,15 @@ import { BASE } from "../constants";
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content="Sitio oficial de CABROCHICO" />
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="theme-color" content="#13151a">
+				<meta name="og:image" content={new URL(image, Astro.url)} />
+				<meta name="og:title" content={title} />
+				<meta name="og:description" content={description} />
+				<meta name="og:url" content={Astro.url} />
+				<meta name="og:site_name" content="CABROCHICO" />
+				<meta name="og:type" content="website" />
         <link rel="icon" type="image/png" href=`${BASE}/favicon.png` />
         <meta name="generator" content="Cabrochickenbot" />
         <title>{title}</title>
