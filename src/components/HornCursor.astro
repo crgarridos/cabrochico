@@ -33,16 +33,16 @@ import { BASE } from "../constants";
         }
 
         $cursor.addEventListener("click", () => {
-            toggleCursorForSession()
+            toggleCursorForSession();
             $body.classList.toggle("horn");
         });
     });
 
-function toggleCursorForSession() {
-    if (sessionStorage.getItem("horn")) {
-        sessionStorage.removeItem("horn");
-    } else {
-        sessionStorage.setItem("horn", "activated");
+    function toggleCursorForSession() {
+        if (sessionStorage.getItem("horn")) {
+            sessionStorage.removeItem("horn");
+        } else {
+            sessionStorage.setItem("horn", "activated");
+        }
     }
-}
 </script>
