@@ -5,20 +5,6 @@ import Layout from "../layouts/Layout.astro";
 import Modal from "../components/Modal.astro";
 import ImageModal from "../components/ImageModal.astro";
 
-const IMGS = [
-    "../assets/img/cc-four-pink.jpeg",
-    "../assets/img/revenga cover.png",
-    "../assets/img/flyers/20220916.jpeg",
-    "../assets/img/cc-four.jpeg",
-    "../assets/img/cc-four-pink.jpeg",
-    "../assets/img/revenga cover.png",
-    "../assets/img/cc-four.jpeg",
-    "../assets/img/cc-four-pink.jpeg",
-    "../assets/img/revenga cover.png",
-    "../assets/img/cc-four.jpeg",
-    "../assets/img/cc-four-pink.jpeg",
-    "../assets/img/revenga cover.png",
-];
 const IMAGES = import.meta.glob<{ default: ImageMetadata }>(
     "/src/assets/img/photos/*.{webp,jpeg,jpg,png,gif}"
 );
@@ -32,7 +18,7 @@ const PATHS = Object.keys(IMAGES);
         <ImageModal />
         {
             PATHS.map((path, index) => (
-                <button class="image-container thumbnail" data-url={path}>
+                <button class="image-container thumbnail" data-index={index} data-paths={PATHS}>
                     <Image
                         src={IMAGES[path]()}
                         height="300"
