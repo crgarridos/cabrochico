@@ -8,23 +8,16 @@ import HornCursor from "./HornCursor.astro";
 <header class="relative pb-6">
     <Navigation />
     <HornCursor />
-    <a href={BASE}>
-        <img
-            class="mx-auto mb-8 mt-8 sm:mt-4"
-            src=`${BASE}/img/cabrochico.svg`
-            alt="Logo CABROCHICO"
-        />
-    </a>
+    <div class="w-[450px] max-w-[85%] h-auto mx-auto mb-8 mt-8 sm:mt-4">
+        <a href={BASE}>
+            <img
+                src=`${BASE}/img/cabrochico.svg`
+                alt="Logo CABROCHICO"
+            />
+        </a>
+    </div>
     <p class="text-center text-white font-semibold">
         Somos cabrochico y queremos jugar!
     </p>
     <ExternalLinks />
 </header>
-
-<style>
-    img {
-        max-width: 85%;
-        width: 450px;
-        height: auto;
-    }
-</style>
