@@ -2,15 +2,19 @@
 import { BASE } from "../constants";
 ---
 
-<img id="cursor" src=`${BASE}/img/cursor.png` class="p-6 block absolute right-0 top-0" />
+<img
+    id="cursor"
+    src=`${BASE}/img/cursor.png`
+    class="p-6 block absolute right-0 top-0"
+/>
 
 <style is:global>
     .horn {
         cursor:
-            url(/horn.cur) 4 12,
+            url(/resources/horn.cur) 4 12,
             auto;
     }
-    @media (hover: none) or (max-width: 768px)  {
+    @media (hover: none) or (max-width: 768px) {
         img#cursor {
             display: none;
         }
@@ -23,8 +27,22 @@ import { BASE } from "../constants";
     document.addEventListener("astro:page-load", () => {
         const $body = $("body");
         const $cursor = $("#cursor");
+
+        if (sessionStorage.getItem("horn")) {
+            $body.classList.add("horn");
+        }
+
         $cursor.addEventListener("click", () => {
+            toggleCursorForSession()
             $body.classList.toggle("horn");
         });
     });
+
+function toggleCursorForSession() {
+    if (sessionStorage.getItem("horn")) {
+        sessionStorage.removeItem("horn");
+    } else {
+        sessionStorage.setItem("horn", "activated");
+    }
+}
 </script>
