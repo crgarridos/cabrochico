@@ -169,7 +169,7 @@ const NOW = new Date();
 const FUTURE_CONCERTS = CONCERTS.filter(
     ({ date }) => new Date(Date.parse(date)) > NOW
 );
-const HAS_FUTURE_CONCERTS = FUTURE_CONCERTS.length;
+const HAS_FUTURE_CONCERTS = FUTURE_CONCERTS.length > 0;
 
 const PAST_CONCERTS = CONCERTS.filter(
     ({ date }) => new Date(Date.parse(date)) < NOW
@@ -188,27 +188,26 @@ const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
 <Layout title="Concerts">
     {
         HAS_FUTURE_CONCERTS && (
-            <h1 class="mt-8 font-bold md:text-3xl text-2xl text-center">
-                {"⚡️ FUTURE CONCERTS ⚡️"}
-            </h1>
+            <>
+                <h1 class="mt-8 font-bold md:text-3xl text-2xl text-center">
+                    {"⚡️ FUTURE CONCERTS ⚡️"}
+                </h1>
+                {FUTURE_CONCERTS.map(({ date, place, city, bands, source }) => (
+                    <div class="mt-8 md:mt-12">
+                        <Concert
+                            highlightSize={true}
+                            formattedDate={FULL_DATE_FORMATTER.format(
+                                Date.parse(date)
+                            )}
+                            place={place}
+                            city={city}
+                            bands={bands}
+                        />
+                    </div>
+                ))}
+                <div class="mb-24" />
+            </>
         )
-    }
-    {
-        HAS_FUTURE_CONCERTS &&
-            FUTURE_CONCERTS.map(({ date, place, city, bands, source }) => (
-                <div class="mt-8 md:mt-12">
-                    <Concert
-                        highlightSize={true}
-                        formattedDate={FULL_DATE_FORMATTER.format(Date.parse(date))}
-                        place={place}
-                        city={city}
-                        bands={bands}
-                    />
-                </div>
-            ))
-    }
-    {
-        HAS_FUTURE_CONCERTS && <div class="mb-24"></div>
     }
 
     <h1 class="mb-8 font-bold md:text-3xl text-2xl">{"// PAST CONCERTS"}</h1>
