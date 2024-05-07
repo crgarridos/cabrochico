@@ -1,15 +1,9 @@
 ---
-import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import Modal from "../components/Modal.astro";
 import ImageModal from "../components/ImageModal.astro";
+import { PHOTOS, PATHS } from "../lib/gallery"
 
-const IMAGES = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/img/photos/*.{webp,jpeg,jpg,png,gif}"
-);
-
-const PATHS = Object.keys(IMAGES);
 ---
 
 <Layout title="Gallery">
@@ -18,14 +12,18 @@ const PATHS = Object.keys(IMAGES);
         <ImageModal />
         {
             PATHS.map((path, index) => (
-                <button class="image-container thumbnail" data-index={index} data-paths={PATHS}>
+                <button
+                    class="image-container thumbnail"
+                    data-index={index}
+                >
                     <Image
-                        src={IMAGES[path]()}
+                        src={PHOTOS[path]()}
                         height="300"
+                        width="300"
                         alt={`Photo ${index + 1}`}
                         class="block opacity-0 transition-opacity"
                         onload="this.style.opacity=1"
-                        loading="eager"
+                        loading="lazy"
                     />
                 </button>
             ))

@@ -1,6 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { BASE } from "../constants.js";
-const { id } = Astro.props;
+import { PHOTOS, PATHS } from "../lib/gallery";
 ---
 
 <style>
@@ -88,7 +89,16 @@ const { id } = Astro.props;
                         d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
                 </svg>
             </button>
-            <img class="image-full" src="" />
+            {
+                PATHS.map((path, index) => (
+                    <Image
+                        src={PHOTOS[path]()}
+                        class="image-full hidden"
+                        alt={`Photo ${index + 1}`}
+                        loading="lazy"
+                    />
+                ))
+            }
         </div>
         <button class="inline-block m-auto">
             <img
@@ -104,16 +114,12 @@ const { id } = Astro.props;
     import { $ } from "@/lib/dom-selector";
 
     document.addEventListener("astro:page-load", () => {
+        const $imgs = document.querySelectorAll(".image-full");
         const $imageContainer = document.querySelectorAll(".image-container");
         const $imageDialog = $(".image-dialog") as HTMLDialogElement;
         const $closeButton = $(".close-dialog");
-        const $imgFull = $(".image-full");
 
         if (!$imageDialog) return;
-
-        $imageDialog.addEventListener("close", () => {
-            $imgFull?.setAttribute("src", "");
-        });
 
         $closeButton?.addEventListener("click", () => $imageDialog.close());
 
@@ -125,32 +131,33 @@ const { id } = Astro.props;
         $imageContainer?.forEach((el) => {
             el.addEventListener("click", async (event) => {
                 const currentTarget = event.currentTarget as HTMLElement;
-                const { paths: rawPaths, index } = await currentTarget.dataset;
-                if (!rawPaths || !index) return;
+                const { index } = currentTarget.dataset;
+                if (!index) return;
 
-                const paths = rawPaths.split(",");
                 let currentIndex = parseInt(index);
 
-                configGalleryNavigation(paths, currentIndex, $imgFull);
+                configGalleryNavigation(currentIndex, $imgs);
                 $imageDialog.showModal();
-
             });
         });
     });
 
-    function configGalleryNavigation(paths, index, $img) {
+    function configGalleryNavigation(index, $imgs) {
         const $next = $(".next");
         const $prev = $(".prev");
-        $img.setAttribute("src", paths[index]);
+
+        // $img.setAttribute("src", src);
+        $imgs.forEach($img => $img.classList.add("hidden"));
+        $imgs[index].classList.remove("hidden");
 
         $next.onclick = () => {
-            index = ++index >= paths.length ? 0 : index
-            configGalleryNavigation(paths, index, $img);
+            index = ++index >= $imgs.length ? 0 : index;
+            configGalleryNavigation(index, $imgs);
         };
 
         $prev.onclick = () => {
-            index = --index < 0 ?  paths.length -1 : index
-            configGalleryNavigation(paths, index, $img);
+            index = --index < 0 ? $imgs.length - 1 : index;
+            configGalleryNavigation(index, $imgs);
         };
     }
 </script>
