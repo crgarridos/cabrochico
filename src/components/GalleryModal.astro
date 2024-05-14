@@ -145,8 +145,13 @@ import { PHOTOS, PATHS } from "../lib/gallery.js";
     function configGalleryNavigation(index, $imgs) {
         const $next = $(".next");
         const $prev = $(".prev");
+        /**
+         * TODO:
+         *  - Fix gallery white background to fit image
+         *  - Fix controls for mobile
+         *  - Display index indicator
+         */
 
-        // $img.setAttribute("src", src);
         $imgs.forEach($img => $img.classList.add("hidden"));
         $imgs[index].classList.remove("hidden");
 

@@ -1,56 +1,10 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import GalleryModal from "../components/GalleryModal.astro";
-import { PHOTOS, PATHS } from "../lib/gallery"
-
+import FancyBoxGallery from "@/components/FancyBoxGallery.astro";
 ---
 
 <Layout title="Gallery">
     <h1 class="text-3xl font-bold text-center">PHOTOS 📸</h1>
-    <section class="grid gap-4 place-items-center mt-8 place-content-center">
-        <GalleryModal />
-        {
-            PATHS.map((path, index) => (
-                <button
-                    class="image-container thumbnail"
-                    data-index={index}
-                >
-                    <Image
-                        src={PHOTOS[path]()}
-                        height="300"
-                        width="300"
-                        alt={`Photo ${index + 1}`}
-                        class="block opacity-0 transition-opacity"
-                        onload="this.style.opacity=1"
-                        loading="lazy"
-                    />
-                </button>
-            ))
-        }
+        <FancyBoxGallery/>
     </section>
 </Layout>
-
-<style>
-    section {
-        animation: resize 200ms;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 140px);
-    }
-    .thumbnail {
-        aspect-ratio: 1/1;
-        width: 100%;
-        height: 100%;
-        transition: scale 250ms;
-        overflow: hidden;
-    }
-
-    .thumbnail:hover {
-        scale: 1.05;
-    }
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-</style>
