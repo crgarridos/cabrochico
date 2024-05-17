@@ -6,9 +6,13 @@
 
 **CABROCHICO** nació de la amistad y la pasión por la música de Hugo Correa y Carlos Puentes. Mientras trabajaban largos turnos, aprovechaban el tiempo libre para crear canciones y experimentar con sonidos nuevos. Poco después, Cristian Garrido se unió al grupo como segundo guitarrista y vocalista, aportando armonías vocales. Gabriel Moreno completó la formación al integrarse como bajista y vocalista. La alineación actual se completó con David Crespo en la batería, reemplazando a Carlos cuando tuvo que regresar a Chile.
 
-### Nuestro Nombre
+### Nuestro Compromiso DIY
 
-El nombre **CABROCHICO** significa "el niño que llevamos dentro", reflejando nuestro espíritu juvenil, divertido y despreocupado.
+**CABROCHICO** es un grupo 100% DIY (Do It Yourself). En los últimos dos años, hemos lanzado dos EPs y un videoclip de manera independiente. Estamos comprometidos con la autoproducción y el control creativo de nuestro trabajo, mientras trabajamos en la profesionalización de nuestro grupo.
+
+### El Significado de Nuestro Nombre
+
+**CABROCHICO** proviene de una expresión chilena y significa para nosotros "el niño que llevamos dentro". Este nombre refleja nuestro espíritu juvenil, divertido y despreocupado, que se refleja tanto en nuestra música como en nuestra actitud en el escenario y en la vida.
 
 ### Nuestra Música
 
