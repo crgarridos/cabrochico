@@ -1,3 +1,31 @@
-CABROCHICO is a punk-rock group known for their high-energy performances. Formed in 2021. Today, the band consists of two guitars, a bass, the drums, and three voices, all hailing from Latin America and residing in Lille, France.
-With two EPs already released, they excite fans of alternative music. Inspired by skate-surf-punk-rock and internet memes, their songs are all in Spanish.
-Cabrochico embodies the thrill of playing relentlessly and ensuring that the audience has just as much fun!
+## Sobre Nosotros
+
+**CABROCHICO** es un grupo de punk-rock conocido por sus actuaciones enérgicas y llenas de vida. Formado en 2021, hoy la banda está compuesta por dos guitarras, un bajo, una batería y tres voces, todos originarios de América Latina y residiendo en Lille, Francia.
+
+### Nuestro Viaje
+
+**CABROCHICO** nació de la amistad y la pasión por la música de Hugo Correa y Carlos Puentes. Mientras trabajaban largos turnos, aprovechaban el tiempo libre para crear canciones y experimentar con sonidos nuevos. Poco después, Cristian Garrido se unió al grupo como segundo guitarrista y vocalista, aportando armonías vocales. Gabriel Moreno completó la formación al integrarse como bajista y vocalista. La alineación actual se completó con David Crespo en la batería, reemplazando a Carlos cuando tuvo que regresar a Chile.
+
+### Nuestro Nombre
+
+El nombre **CABROCHICO** significa "el niño que llevamos dentro", reflejando nuestro espíritu juvenil, divertido y despreocupado.
+
+### Nuestra Música
+
+Influenciados por el skate-surf-punk-rock y los memes de internet, todas nuestras canciones son originales y en español. Nuestro estilo es una mezcla única de energía y diversión, asegurando que tanto nosotros como nuestro público disfrutemos al máximo cada presentación.
+
+### Logros y Reconocimientos
+
+En 2021 lanzamos nuestro primer EP de 3 canciones. En 2022, publicamos "Charlie Brownie", nuestro primer álbum totalmente autoproducido. En 2023, lanzamos "Revenga!", producido por Milo de Huhok en Barcelona. Estos lanzamientos han sido hitos importantes en nuestra trayectoria musical.
+
+### En Vivo
+
+La energía de **CABROCHICO** realmente brilla en nuestros conciertos en vivo. Hemos tocado en la escena local del norte de Francia y en festivales como "If Ghandi was a Punk". Cada presentación es una oportunidad para conectarnos con nuestro público de una manera única y poderosa.
+
+### Lo Que Viene
+
+El futuro de **CABROCHICO** se ve brillante. Estamos trabajando en nuevas canciones y preparando proyectos emocionantes. Nos emociona compartir nuestra música con el mundo y continuar creciendo como artistas y como banda.
+
+### Un Toque Personal
+
+Lo que hace especial a **CABROCHICO** es nuestra historia y la forma en que nos formamos. Lo que comenzó como una forma de hacer tiempo entre turnos de trabajo se ha transformado en una carrera apasionante y en una misión de vida. Cada miembro de la banda aporta algo único, y juntos, estamos creando algo que va más allá de la música.
