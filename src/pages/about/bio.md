@@ -1,0 +1,3 @@
+CABROCHICO is a punk-rock group known for their high-energy performances. Formed in 2021. Today, the band consists of two guitars, a bass, the drums, and three voices, all hailing from Latin America and residing in Lille, France.
+With two EPs already released, they excite fans of alternative music. Inspired by skate-surf-punk-rock and internet memes, their songs are all in Spanish.
+Cabrochico embodies the thrill of playing relentlessly and ensuring that the audience has just as much fun!

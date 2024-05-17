@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+// import bioImage from '../../assets/img/cc-four-pink.jpeg';
+import bioImage from "../../assets/img/fotomitterie.webp";
+
+import { Content as BIO } from "./ex.md";
+---
+
+<Layout title="Biografia de CABROCHICO">
+    <article class="bio p-4 sm:p-8 rounded-lg text-white">
+        <Image
+            src={bioImage}
+            class="rounded-lg w-full"
+            alt="Picture of all members"
+            width="800"
+            height="800"
+        />
+        <div class="mt-4 sm:mt-8">
+            <BIO/>
+        </div>
+    </article>
+
+    <style is:global>
+        /* TODO: Delete is global ? */
+        @tailwind base;
+
+        @layer base {
+            .bio {
+                background: #0006;
+                p {
+                    @apply mt-2 mb-3;
+                }
+                p:first-child {
+                    @apply mt-0;
+                }
+                p:last-child {
+                    @apply mb-4;
+                }
+
+                h1,
+                h2,
+                h3 {
+                    @apply font-bold mt-2 mb-3;
+                }
+                h1 {
+                    @apply text-2xl;
+                }
+                h2 {
+                    @apply text-xl;
+                }
+                h3 {
+                    @apply text-lg;
+                }
+                a {
+                    @apply underline;
+                    color: var(--cc-color-green);
+                }
+            }
+        }
+        /* TODO uncomment ??
+        @tailwind components;
+
+        @tailwind utilities; */
+    </style>
+</Layout>
