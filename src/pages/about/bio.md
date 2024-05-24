@@ -18,18 +18,14 @@
 
 Influenciados por el skate-surf-punk-rock y los memes de internet, todas nuestras canciones son originales y en español. Nuestro estilo es una mezcla única de energía y diversión, asegurando que tanto nosotros como nuestro público disfrutemos al máximo cada presentación.
 
-### Logros y Reconocimientos
-
 En 2021 lanzamos nuestro primer EP de 3 canciones. En 2022, publicamos "Charlie Brownie", nuestro primer álbum totalmente autoproducido. En 2023, lanzamos "Revenga!", producido por Milo de Huhok en Barcelona. Estos lanzamientos han sido hitos importantes en nuestra trayectoria musical.
 
 ### En Vivo
 
-La energía de **CABROCHICO** realmente brilla en nuestros conciertos en vivo. Hemos tocado en la escena local del norte de Francia y en festivales como "If Ghandi was a Punk". Cada presentación es una oportunidad para conectarnos con nuestro público de una manera única y poderosa.
+La energía de **CABROCHICO** realmente brilla en nuestros conciertos en vivo. Hemos tocado en la escena local del norte de Francia. Cada presentación es una oportunidad para conectarnos con nuestro público de una manera única y poderosa.
 
 ### Lo Que Viene
 
 El futuro de **CABROCHICO** se ve brillante. Estamos trabajando en nuevas canciones y preparando proyectos emocionantes. Nos emociona compartir nuestra música con el mundo y continuar creciendo como artistas y como banda.
-
-### Un Toque Personal
 
 Lo que hace especial a **CABROCHICO** es nuestra historia y la forma en que nos formamos. Lo que comenzó como una forma de hacer tiempo entre turnos de trabajo se ha transformado en una carrera apasionante y en una misión de vida. Cada miembro de la banda aporta algo único, y juntos, estamos creando algo que va más allá de la música.
