@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^8.2.5",
     "@astrojs/tailwind": "^5.1.0",
     "@fancyapps/ui": "^5.0.36",
     "astro": "^4.5.15",
