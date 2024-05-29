@@ -8,7 +8,7 @@ import { Content as BioEnglish } from "./bio-en.md";
 import { Content as BioFrench } from "./bio-fr.md";
 ---
 
-<Layout title="Biografia de CABROCHICO">
+<Layout title="About CABROCHICO">
     <article class="bio p-4 sm:p-8 rounded-lg text-white">
         <Image
             src={bioImage}
@@ -19,13 +19,13 @@ import { Content as BioFrench } from "./bio-fr.md";
         />
         <div class="mt-4 sm:mt-8">
             <div id="bio-en" class="hidden">
-                <BioEnglish/>
+                <BioEnglish />
             </div>
             <div id="bio-es" class="hidden">
-                <BioSpanish/>
+                <BioSpanish />
             </div>
             <div id="bio-fr" class="hidden">
-                <BioFrench/>
+                <BioFrench />
             </div>
         </div>
     </article>
@@ -80,7 +80,10 @@ import { Content as BioFrench } from "./bio-fr.md";
     document.addEventListener("astro:page-load", () => {
         const urlParams = new URLSearchParams(window.location.search);
         const lang = urlParams.get("lang") ?? navigator.language ?? "en";
-        const $bio = $(`#bio-${lang}`) ?? $(`#bio-en`)
-        $bio.classList.remove("hidden")
-    })
+        const langCode = lang.slice(0, 2);
+
+        const $bio = $(`#bio-${langCode}`) ?? $("#bio-en");
+
+        $bio.classList.remove("hidden");
+    });
 </script>
