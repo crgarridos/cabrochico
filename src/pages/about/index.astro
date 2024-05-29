@@ -1,26 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
-// import bioImage from '../../assets/img/cc-four-pink.jpeg';
 import bioImage from "../../assets/img/fotomitterie.webp";
 
 import { Content as BioSpanish } from "./bio-es.md";
 import { Content as BioEnglish } from "./bio-en.md";
 import { Content as BioFrench } from "./bio-fr.md";
-
-const lang = Astro.url.searchParams.get("lang") ?? Astro.preferredLocale;
-
-const resolveBioBlock = (lang) => {
-    if (lang === "es") {
-        return BioSpanish;
-    } else if (lang === "fr") {
-        return BioFrench;
-    } else {
-        return BioEnglish;
-    }
-};
-
-const Bio = resolveBioBlock(lang);
 ---
 
 <Layout title="Biografia de CABROCHICO">
@@ -33,7 +18,15 @@ const Bio = resolveBioBlock(lang);
             height="800"
         />
         <div class="mt-4 sm:mt-8">
-            <Bio />
+            <div id="bio-en" class="hidden">
+                <BioEnglish/>
+            </div>
+            <div id="bio-es" class="hidden">
+                <BioSpanish/>
+            </div>
+            <div id="bio-fr" class="hidden">
+                <BioFrench/>
+            </div>
         </div>
     </article>
 
@@ -80,3 +73,14 @@ const Bio = resolveBioBlock(lang);
         @tailwind utilities; */
     </style>
 </Layout>
+
+<script>
+    import { $ } from "@/lib/dom-selector";
+
+    document.addEventListener("astro:page-load", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get("lang") ?? navigator.language ?? "en";
+        const $bio = $(`#bio-${lang}`) ?? $(`#bio-en`)
+        $bio.classList.remove("hidden")
+    })
+</script>

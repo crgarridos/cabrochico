@@ -1,25 +1,11 @@
-import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import { defineConfig } from 'astro/config';
 
-import node from "@astrojs/node";
+import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://crgarridos.github.io/cabrochico",
-  base: "cabrochico",
-  output: "server",
-  adapter: node({
-    mode: "standalone"
-  }),
+  site: 'https://crgarridos.github.io/cabrochico',
+  base: 'cabrochico',
   integrations: [tailwind()],
-  trailingSlash: "ignore",
-  // ^ explicitly here. we need it for base + active higlighting in Header
-  i18n: {
-    defaultLocale: "en",
-    locales: ["es", "en", "fr"],
-    routing: {
-      prefixDefaultLocale: false,
-      redirectToDefaultLocale: true
-    }
-  },
+  trailingSlash: "ignore", // explicitly here. we need it for base + active higlighting in Header
 });
