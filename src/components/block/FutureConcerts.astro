@@ -1,0 +1,37 @@
+---
+import Concert from "@/components/Concert.astro";
+import { FUTURE_CONCERTS, PAST_CONCERTS } from "@/concerts";
+
+const HAS_FUTURE_CONCERTS = FUTURE_CONCERTS.length > 0;
+
+const FULL_DATE_FORMATTER = new Intl.DateTimeFormat("fr-FR", {
+    dateStyle: "full",
+    timeZone: "Europe/Paris",
+});
+const { class: className, ...rest } = Astro.props;
+
+---
+
+{
+    HAS_FUTURE_CONCERTS && (
+        <section class={className}>
+            <h1 class="font-bold md:text-3xl text-2xl text-center">
+                {"⚡️ FUTURE CONCERTS ⚡️"}
+            </h1>
+            {FUTURE_CONCERTS.map(({ date, place, city, bands, source }) => (
+                <div class="mt-8 md:mt-12">
+                    <Concert
+                        highlightSize={true}
+                        formattedDate={FULL_DATE_FORMATTER.format(
+                            Date.parse(date)
+                        )}
+                        place={place}
+                        city={city}
+                        bands={bands}
+                    />
+                </div>
+            ))}
+            <div class="mb-24" />
+        </section>
+    )
+}

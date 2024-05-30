@@ -7,6 +7,7 @@ import ContactBlock from "@/components/ContactBlock.astro";
 import { Image } from "astro:assets";
 import revengaCover from "@/assets/img/revenga cover.png";
 import NewsletterBlock from "@/components/NewsletterBlock.astro";
+import FutureConcerts from "@/components/block/FutureConcerts.astro";
 ---
 
 <Layout title="Sitio oficial de CABROCHICO.">
@@ -70,12 +71,7 @@ import NewsletterBlock from "@/components/NewsletterBlock.astro";
         title="WATCH MORE"
     />
 
-    <!-- CONCERTS -->
-    <!--
-    <h1 class="mt-24 mb-4 font-bold text-3xl">{"// CONCERTS //"}</h1>
-    <RoundButton href="" title="SEE PAST" />
-    -->
-
+    <FutureConcerts class="mt-24" />
     <ContactBlock class="mt-24" />
     <NewsletterBlock class="mt-24" />
 </Layout>
