@@ -8,6 +8,7 @@ import { Content as BioEnglish } from "./bio-en.md";
 import { Content as BioFrench } from "./bio-fr.md";
 
 import LangSelector from "@/components/LangSelector.astro";
+import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
 ---
 
 <Layout title="About CABROCHICO">
@@ -33,6 +34,8 @@ import LangSelector from "@/components/LangSelector.astro";
             </div>
         </div>
     </article>
+
+    <NewsletterBlock class="mt-8" />
 
     <style>
         @tailwind base;
