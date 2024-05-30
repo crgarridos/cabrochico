@@ -52,10 +52,11 @@ import FutureConcerts from "@/components/block/FutureConcerts.astro";
     </article>
 
     <!-- VIDEO -->
+    <hr />
 
-    <h1 class="mt-24 mb-4 font-bold text-3xl text-center">{"// VIDEO //"}</h1>
+    <h1 class="mb-12 font-bold text-3xl text-center">{"// VIDEO //"}</h1>
     <iframe
-        class="w-full h-auto aspect-video mb-4"
+        class="w-full h-auto aspect-video mb-8"
         src="https://www.youtube-nocookie.com/embed/OvW8sQG0tpk?si=iY-4JKLVwaUT7aRi"
         title="YouTube video player"
         frameborder="0"
@@ -71,7 +72,25 @@ import FutureConcerts from "@/components/block/FutureConcerts.astro";
         title="WATCH MORE"
     />
 
-    <FutureConcerts class="mt-24" />
-    <ContactBlock class="mt-24" />
-    <NewsletterBlock class="mt-24" />
+    <hr />
+    <FutureConcerts/>
+    <hr />
+    <ContactBlock />
+    <hr />
+    <NewsletterBlock/>
 </Layout>
+
+<style>
+    hr {
+        @apply mt-16 lg:mt-20;
+        @apply mb-16 lg:mb-20;
+        background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255, 255, 255, 0.7),
+            transparent
+        );
+        height: 1px;
+        border: 0;
+    }
+</style>
