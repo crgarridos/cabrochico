@@ -1,35 +1,35 @@
 ---
-
 import RoundButton from "@/components/RoundButton.astro";
-import { BASE } from "../constants";
-import Layout from "../layouts/Layout.astro";
+import { BASE } from "@/constants";
+import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout title="Not found">
-  <div class="not-found-content">
-    <p class="sm:text-3xl text-2xl p-4 md:p-8 text-center">There is nothing here 👀</p>
-    <iframe
-        class="w-full h-auto aspect-video mb-4"
-        src="https://www.youtube-nocookie.com/embed/mHONNcZbwDY?start=226"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-        loading="eager"
-    >
-    </iframe>
+    <div class="not-found-content">
+        <p class="sm:text-3xl text-2xl p-4 md:p-8 text-center">
+            There is nothing here 👀
+        </p>
+        <iframe
+            class="w-full h-auto aspect-video mb-4"
+            src="https://www.youtube-nocookie.com/embed/mHONNcZbwDY?start=226"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="eager"
+        >
+        </iframe>
 
-    <RoundButton href={BASE} title="BACK TO HOME" class="mx-auto"/>
-  </div>
-  </Layout>
+        <RoundButton href={BASE} title="BACK TO HOME" class="mx-auto" />
+    </div>
+</Layout>
 
 <style>
-.not-found-content * {
-
-  display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-}
+    .not-found-content * {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+    }
 </style>

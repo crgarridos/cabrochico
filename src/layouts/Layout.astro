@@ -36,58 +36,57 @@ import { BASE } from "@/constants";
             <slot />
         </main>
         <Footer />
+        <style is:global>
+            :root {
+                --accent: 136, 58, 234;
+                --accent-light: 224, 204, 250;
+                --accent-dark: 49, 10, 101;
+                --accent-gradient: linear-gradient(
+                    45deg,
+                    rgb(var(--accent)),
+                    rgb(var(--accent-light)) 30%,
+                    white 60%
+                );
+
+                --cc-color-orange: 231 92 2;
+                --cc-color-yellow: 254 217 37;
+                --cc-color-green: #8ec526;
+                --cc-color-black: #13151a;
+            }
+            html {
+                font-family: system-ui, sans-serif;
+                min-height: 100vh;
+                min-height: 100dvh;
+                background: #0c0c0c;
+            }
+            body {
+                min-height: 100dvh;
+                background: linear-gradient(
+                    to bottom,
+                    var(--cc-color-black),
+                    var(--cc-color-green)
+                );
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+            }
+            main {
+                margin: auto;
+                width: 800px;
+                max-width: 100%;
+                color: white;
+            }
+            code {
+                font-family:
+                    Menlo,
+                    Monaco,
+                    Lucida Console,
+                    Liberation Mono,
+                    DejaVu Sans Mono,
+                    Bitstream Vera Sans Mono,
+                    Courier New,
+                    monospace;
+            }
+        </style>
     </body>
 </html>
-
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-
-		--cc-color-orange: 231 92 2;
-		--cc-color-yellow: 254 217 37;
-		--cc-color-green: #8ec526;
-		--cc-color-black: #13151a;
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		min-height: 100vh;
-		min-height: 100dvh;
-		background: #0c0c0c;
-	}
-	body {
-		min-height: 100dvh;
-		background: linear-gradient(
-				to bottom,
-				var(--cc-color-black),
-				var(--cc-color-green)
-		);
-		display: flex;
-    flex-direction: column;
-		padding: 1rem;
-	}
-	main {
-		margin: auto;
-		width: 800px;
-		max-width: 100%;
-		color: white;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>

@@ -20,7 +20,7 @@ import LangSelector from "@/components/LangSelector.astro";
             height="800"
         />
         <div class="mt-4 sm:mt-8">
-            <LangSelector id="lang-selector" class="hidden"/>
+            <LangSelector id="lang-selector" class="hidden" />
 
             <div id="bio-en" class="hidden">
                 <BioEnglish />
@@ -86,7 +86,7 @@ import LangSelector from "@/components/LangSelector.astro";
         $bio.classList.remove("hidden");
 
         if (urlParams.get("flags")) {
-            $("#lang-selector").classList.remove("hidden")
+            $("#lang-selector").classList.remove("hidden");
         }
     });
 </script>
