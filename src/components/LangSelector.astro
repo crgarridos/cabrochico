@@ -1,0 +1,21 @@
+---
+const { id, class: className, ...rest } = Astro.props;
+---
+
+<div id={id} class:list={["h-10 align-middle", className]}>
+    <a href="?lang=en" class="lang-selector text-2xl">🇺🇸</a>
+    <a href="?lang=es" id="flag-es" class="lang-selector text-2xl">🇪🇸</a>
+    <a href="?lang=fr" id="flag-fr" class="lang-selector text-2xl">🇫🇷</a>
+</div>
+
+<style>
+    .lang-selector {
+        padding: 0 4px;
+        transition: font-size 0.2s;
+    }
+
+    .lang-selector:hover {
+        @apply text-3xl;
+        cursor: pointer;
+    }
+</style>

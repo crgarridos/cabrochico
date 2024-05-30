@@ -6,6 +6,8 @@ import bioImage from "../../assets/img/fotomitterie.webp";
 import { Content as BioSpanish } from "./bio-es.md";
 import { Content as BioEnglish } from "./bio-en.md";
 import { Content as BioFrench } from "./bio-fr.md";
+
+import LangSelector from "@/components/LangSelector.astro";
 ---
 
 <Layout title="About CABROCHICO">
@@ -18,6 +20,8 @@ import { Content as BioFrench } from "./bio-fr.md";
             height="800"
         />
         <div class="mt-4 sm:mt-8">
+            <LangSelector id="lang-selector" class="hidden"/>
+
             <div id="bio-en" class="hidden">
                 <BioEnglish />
             </div>
@@ -80,5 +84,9 @@ import { Content as BioFrench } from "./bio-fr.md";
         const $bio = $(`#bio-${langCode}`) ?? $("#bio-en");
 
         $bio.classList.remove("hidden");
+
+        if (urlParams.get("flags")) {
+            $("#lang-selector").classList.remove("hidden")
+        }
     });
 </script>
