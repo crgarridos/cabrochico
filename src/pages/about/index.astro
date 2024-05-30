@@ -7,11 +7,13 @@ import { Content as BioSpanish } from "./bio-es.md";
 import { Content as BioEnglish } from "./bio-en.md";
 import { Content as BioFrench } from "./bio-fr.md";
 
+import GoToTop from "@/components/GoToTop.astro";
 import LangSelector from "@/components/LangSelector.astro";
 import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
 ---
 
 <Layout title="About CABROCHICO">
+    <GoToTop />
     <article class="bio p-4 sm:p-8 rounded-lg text-white">
         <Image
             src={bioImage}
