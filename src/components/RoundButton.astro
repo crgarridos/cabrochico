@@ -3,13 +3,15 @@ interface Props {
 	title: string;
 	href: string;
 	class?: string
+	target?: string
 }
 
-const { href, title, class: className } = Astro.props;
+const { href, title, class: className, target = "_blank"} = Astro.props;
 ---
 <a
   href={href}
   role="button"
+  target={target}
   class={`
         block
         uppercase

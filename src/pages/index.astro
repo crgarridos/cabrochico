@@ -1,10 +1,12 @@
 ---
-import { BASE } from "../constants";
-import Layout from "../layouts/Layout.astro";
-import RoundButton from "../components/RoundButton.astro";
+import { BASE } from "@/constants";
+import Layout from "@/layouts/Layout.astro";
+import RoundButton from "@/components/RoundButton.astro";
+import ContactBlock from "@/components/ContactBlock.astro";
 
-import { Image } from 'astro:assets';
-import revengaCover from '../assets/img/revenga cover.png';
+import { Image } from "astro:assets";
+import revengaCover from "@/assets/img/revenga cover.png";
+import NewsletterBlock from "@/components/NewsletterBlock.astro";
 ---
 
 <Layout title="Sitio oficial de CABROCHICO.">
@@ -14,8 +16,8 @@ import revengaCover from '../assets/img/revenga cover.png';
         <Image
             src={revengaCover}
             alt="Cover of REVENGA!"
-            width=400
-            height=400
+            width="400"
+            height="400"
             class="max-w-[80%] sm:max-w-full mx-auto sm:mx-0"
         />
         <div class="items-center w-full">
@@ -50,7 +52,7 @@ import revengaCover from '../assets/img/revenga cover.png';
 
     <!-- VIDEO -->
 
-    <h1 class="mt-24 mb-4 font-bold text-3xl text-center sm:text-start">{"// VIDEO //"}</h1>
+    <h1 class="mt-24 mb-4 font-bold text-3xl text-center">{"// VIDEO //"}</h1>
     <iframe
         class="w-full h-auto aspect-video mb-4"
         src="https://www.youtube-nocookie.com/embed/OvW8sQG0tpk?si=iY-4JKLVwaUT7aRi"
@@ -74,17 +76,6 @@ import revengaCover from '../assets/img/revenga cover.png';
     <RoundButton href="" title="SEE PAST" />
     -->
 
-    <!-- CONTACT -->
-
-    <h1 class="mt-24 mb-4 font-bold text-3xl text-center sm:text-start">
-        {"// CONTACT //"}
-    </h1>
-    <p class="text-center sm:text-start">
-        want to reach out? wanna buy some merch ? want to share a love story ?
-    </p>
-    <RoundButton
-        class="mt-8 mx-auto sm:mx-0"
-        href="https://ig.me/m/cabrochicoband"
-        title="CONTACT US"
-    />
+    <ContactBlock class="mt-24" />
+    <NewsletterBlock class="mt-24" />
 </Layout>

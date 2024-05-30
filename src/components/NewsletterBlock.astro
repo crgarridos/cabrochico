@@ -1,0 +1,16 @@
+---
+import RoundButton from "@/components/RoundButton.astro";
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<section class={className}>
+    <h1 class="mb-4 font-bold text-2xl sm:text-3xl text-center">
+        {"WANNA HEAR ABOUT US?"}
+    </h1>
+    <RoundButton
+        href="https://forms.gle/YZt3hE1Kj4b2GK7b7"
+        title="Join us in the adventure"
+        class="mx-auto"
+    />
+</section>
