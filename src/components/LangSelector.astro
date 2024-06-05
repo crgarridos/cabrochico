@@ -1,21 +1,88 @@
 ---
 const { id, class: className, ...rest } = Astro.props;
+
+const CODES = ["en", "es", "fr"];
+const LANGS = ["English", "Español", "Français"];
 ---
 
-<div id={id} class:list={["h-10 align-middle", className]}>
-    <a href="?lang=en" class="lang-selector text-2xl">🇺🇸</a>
-    <a href="?lang=es" id="flag-es" class="lang-selector text-2xl">🇪🇸</a>
-    <a href="?lang=fr" id="flag-fr" class="lang-selector text-2xl">🇫🇷</a>
+<div id={id} class:list={["dropdown", className]} data-lang="en">
+    <button
+        class="dropdown-button uppercase font-bold py-3 px-4 inline-flex items-center gap-x-2 text-sm rounded-lg border shadow-sm bg-neutral-900 border-neutral-500 text-neutral-100 hover:bg-neutral-700"
+    >
+        <label class="dropdown-label pointer-events-none">en</label>
+        <svg
+            class="dropdown-arrow size-4 text-white transition-transform duration-200 pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="m6 9 6 6 6-6"></path>
+        </svg>
+    </button>
+    <div
+        class="dropdown-content opacity-0 pointer-events-none absolute transition-[opacity,margin] z-10 duration-200 mt-2 shadow-md rounded-lg p-2 bg-neutral-900 border border-neutral-500"
+    >
+        {
+            LANGS.map((lang, index) => (
+                <a
+                    class="uppercase flex items-center gap-x-3.5 py-3 px-4 rounded-lg text-sm !text-neutral-100 !no-underline focus:outline-none focus:bg-neutral-600 hover:bg-neutral-700 hover:text-neutral-300"
+                    href="#"
+                    onclick={`document.querySelector(".dropdown").dataset.lang = "${CODES[index]}"; event.preventDefault()`}
+                >
+                    {lang}
+                </a>
+            ))
+        }
+    </div>
 </div>
 
-<style>
-    .lang-selector {
-        padding: 0 4px;
-        transition: font-size 0.2s;
-    }
+<script>
+    import { $ } from "@/lib/dom-selector";
 
-    .lang-selector:hover {
-        @apply text-3xl;
-        cursor: pointer;
-    }
-</style>
+    document.addEventListener("astro:page-load", () => {
+        const $dropdownContent = $(".dropdown-content");
+        const $dropdownArrow = $(".dropdown-arrow");
+
+        $(".dropdown-button").addEventListener("click", () => {
+            $dropdownContent.classList.toggle("opacity-0");
+            $dropdownContent.classList.toggle("pointer-events-none");
+            $dropdownArrow.classList.toggle("rotate-180");
+        });
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches(".dropdown-button")) {
+                $dropdownContent.classList.add("opacity-0");
+                $dropdownContent.classList.add("pointer-events-none");
+                $dropdownArrow.classList.remove("rotate-180");
+            }
+        };
+    });
+
+
+
+    const langObserver = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            if (mutation.type === "attributes") {
+              const newLang = $(".dropdown").dataset.lang;
+
+                $(".dropdown-label").innerText = $(".dropdown").dataset.lang;
+                $("#bio-en").classList.add("hidden")
+                $("#bio-es").classList.add("hidden")
+                $("#bio-fr").classList.add("hidden")
+                $("#bio-"+ newLang).classList.remove("hidden")
+              }
+
+        });
+    });
+
+    langObserver.observe($(".dropdown"), {
+        attributes: true, //configure it to listen to attribute changes
+    });
+</script>
