@@ -7,7 +7,7 @@ const LANGS = ["English", "Español", "Français"];
 
 <div id={id} class:list={["dropdown", className]} data-lang="en">
     <button
-        class="dropdown-button uppercase font-bold py-3 px-4 inline-flex items-center gap-x-2 text-sm rounded-lg border shadow-sm bg-neutral-900 border-neutral-500 text-neutral-100 hover:bg-neutral-700"
+        class="dropdown-button uppercase font-bold py-1 px-2 inline-flex items-center gap-x-2 text-sm rounded-lg border shadow-sm bg-neutral-900 border-neutral-500 text-neutral-100 hover:bg-neutral-700"
     >
         <label class="dropdown-label pointer-events-none">en</label>
         <svg
@@ -26,12 +26,12 @@ const LANGS = ["English", "Español", "Français"];
         </svg>
     </button>
     <div
-        class="dropdown-content opacity-0 pointer-events-none absolute transition-[opacity,margin] z-10 duration-200 mt-2 shadow-md rounded-lg p-2 bg-neutral-900 border border-neutral-500"
+        class="dropdown-content opacity-0 pointer-events-none absolute transition-[opacity,margin] z-10 duration-200 mt-2 -ml-4 shadow-md rounded-lg bg-neutral-900 border border-neutral-500"
     >
         {
             LANGS.map((lang, index) => (
                 <a
-                    class="uppercase flex items-center gap-x-3.5 py-3 px-4 rounded-lg text-sm !text-neutral-100 !no-underline focus:outline-none focus:bg-neutral-600 hover:bg-neutral-700 hover:text-neutral-300"
+                    class="uppercase flex items-center gap-x-3.5 py-2 px-2 rounded-lg text-sm !text-neutral-100 !no-underline focus:outline-none focus:bg-neutral-600 hover:bg-neutral-700 hover:text-neutral-300"
                     href="#"
                     onclick={`document.querySelector(".dropdown").dataset.lang = "${CODES[index]}"; event.preventDefault()`}
                 >

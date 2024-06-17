@@ -22,20 +22,23 @@ import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
             width="800"
             height="800"
         />
-        <div class="flex justify-end mt-4">
-            <LangSelector id="lang-selector" class="hidden -mb-6"/>
-        </div>
-        <div>
-            <div id="bio-en" class="hidden">
-                <BioEnglish />
+        <section>
+            <div class="flex justify-end mt-4">
+                <LangSelector id="lang-selector" class="hidden"/>
             </div>
-            <div id="bio-es" class="hidden">
-                <BioSpanish />
+            <div class="-mt-9">
+                <div id="bio-en" class="hidden">
+                    <BioEnglish />
+                </div>
+                <div id="bio-es" class="hidden">
+                    <BioSpanish />
+                </div>
+                <div id="bio-fr" class="hidden">
+                    <BioFrench />
+                </div>
             </div>
-            <div id="bio-fr" class="hidden">
-                <BioFrench />
-            </div>
-        </div>
+        </section>
+
     </article>
 
     <NewsletterBlock class="mt-8" />
