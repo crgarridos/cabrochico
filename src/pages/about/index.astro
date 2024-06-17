@@ -24,7 +24,7 @@ import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
         />
         <section>
             <div class="flex justify-end mt-4">
-                <LangSelector id="lang-selector" class="hidden"/>
+                <LangSelector id="lang-selector"/>
             </div>
             <div class="-mt-9">
                 <div id="bio-en" class="hidden">
@@ -92,9 +92,5 @@ import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
 
         $(".dropdown").dataset.lang = langCode;
         $("#bio-" + langCode).classList.remove("hidden");
-
-        if (urlParams.get("flags")) {
-            $("#lang-selector").classList.remove("hidden");
-        }
     });
 </script>
