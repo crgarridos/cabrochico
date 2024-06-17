@@ -28,4 +28,4 @@ L'énergie de **CABROCHICO** brille vraiment lors de nos concerts en direct. Nou
 
 L'avenir de **CABROCHICO** s'annonce prometteur. Nous travaillons sur de nouvelles chansons et préparons des projets excitants. Nous sommes impatients de partager notre musique avec le monde et de continuer à grandir en tant qu'artistes et en tant que groupe.
 
-Ce qui rend **CABROCHICO** spécial, c'est notre histoire et la manière dont nous nous sommes réunis. Ce qui a commencé comme une façon de passer le temps entre les quarts de travail s'est transformé en une carrière passionnante et une mission de vie. Chaque membre du groupe apporte quelque chose d'unique, et ensemble, nous créons quelque chose qui va au-delà de la musique.
+Ce qui rend **CABROCHICO** spécial, c'est notre histoire et la manière dont nous nous sommes réunis. Ce qui a commencé comme une façon de passer le temps entre les pauses de travail s'est transformé en une carrière passionnante et une mission de vie. Chaque membre du groupe apporte quelque chose d'unique, et ensemble, nous créons quelque chose qui va au-delà de la musique.
