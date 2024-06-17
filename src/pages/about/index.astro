@@ -88,6 +88,7 @@ import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
         const langCode = lang.slice(0, 2);
 
         $(".dropdown").dataset.lang = langCode;
+        $("#bio-" + langCode).classList.remove("hidden");
 
         if (urlParams.get("flags")) {
             $("#lang-selector").classList.remove("hidden");

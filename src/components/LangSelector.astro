@@ -65,24 +65,21 @@ const LANGS = ["English", "Español", "Français"];
         };
     });
 
-
-
     const langObserver = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.type === "attributes") {
-              const newLang = $(".dropdown").dataset.lang;
+                const newLang = $(".dropdown").dataset.lang;
 
                 $(".dropdown-label").innerText = $(".dropdown").dataset.lang;
-                $("#bio-en").classList.add("hidden")
-                $("#bio-es").classList.add("hidden")
-                $("#bio-fr").classList.add("hidden")
-                $("#bio-"+ newLang).classList.remove("hidden")
-              }
-
+                $("#bio-en").classList.add("hidden");
+                $("#bio-es").classList.add("hidden");
+                $("#bio-fr").classList.add("hidden");
+                $("#bio-" + newLang).classList.remove("hidden");
+            }
         });
     });
 
     langObserver.observe($(".dropdown"), {
-        attributes: true, //configure it to listen to attribute changes
+        attributes: true, // configure it to listen to html attribute changes
     });
 </script>
