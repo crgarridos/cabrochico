@@ -7,6 +7,8 @@ import ContactBlock from "@/components/block/ContactBlock.astro";
 import { Image } from "astro:assets";
 import revengaCover from "@/assets/img/revenga cover.png";
 import NewsletterBlock from "@/components/block/NewsletterBlock.astro";
+
+import { FUTURE_CONCERTS } from "@/concerts";
 import FutureConcerts from "@/components/block/FutureConcerts.astro";
 ---
 
@@ -73,8 +75,12 @@ import FutureConcerts from "@/components/block/FutureConcerts.astro";
     />
 
     <hr />
-    <FutureConcerts/>
-    <hr />
+    {
+        FUTURE_CONCERTS.length > 0 &&
+
+        <FutureConcerts/>
+        <hr />
+    }
     <ContactBlock />
     <hr />
     <NewsletterBlock/>
