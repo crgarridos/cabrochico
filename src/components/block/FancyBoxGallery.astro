@@ -26,7 +26,12 @@ const PICS = await Promise.all(
 );
 ---
 
-<section class="grid gap-4 place-items-center mt-8 place-content-center">
+<section
+    class="grid place-items-center mt-8 place-content-center
+            animate-[resize_200ms]
+            sm:gap-4 sm:grid-cols-[repeat(auto-fill,140px)]
+            gap-1 grid-cols-[repeat(auto-fill,78px)]"
+>
     {
         PICS.map((pics, index) => (
             <a
@@ -67,11 +72,6 @@ const PICS = await Promise.all(
 </script>
 
 <style>
-    section {
-        animation: resize 200ms;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 140px);
-    }
     .thumbnail {
         aspect-ratio: 1/1;
         width: 100%;
