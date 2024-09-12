@@ -1,0 +1,36 @@
+# .editorconfig file for web development in VS Code
+
+# Root of the project
+root = true
+
+# All files
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Matches files with a specific extension (.html, .css, .js)
+[*.html]
+indent_size = 4
+
+[*.css]
+indent_size = 4
+
+[*.js]
+indent_size = 4
+
+# JSON files (such as package.json)
+[*.json]
+indent_size = 4
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 4
+
+# YAML files (e.g., for CI/CD or other configuration)
+[*.yml]
+indent_size = 4
