@@ -1,413 +1,315 @@
----
-// src/pages/flappy-bird.astro
----
-
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Custom Flappy Bird with Boss Fight</title>
-        <style>
-            canvas {
-                border: 1px solid black;
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Flappy Bird with Boss Fight</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+
+            // Game variables
+            let bird, pipes, boss, lasers, score, gameLoop, frames;
+            let scaleFactor, baseWidth, baseHeight;
+
+            // Utility function for scaling
+            function scale(value) {
+                return value * scaleFactor;
             }
-        </style>
-    </head>
-    <body>
-        <canvas id="gameCanvas" width="400" height="600"></canvas>
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const canvas = document.getElementById("gameCanvas");
-                const ctx = canvas.getContext("2d");
 
-                // Game variables
-                let bird, pipes, boss, lasers, score, gameLoop, frames;
-                let scaleFactor, baseWidth, baseHeight;
+            // Resize function
+            function resizeCanvas() {
+                baseWidth = 400;
+                baseHeight = 600;
+                const windowRatio = window.innerWidth / window.innerHeight;
+                const gameRatio = baseWidth / baseHeight;
 
-                // Resize function
-                function resizeCanvas() {
-                    baseWidth = 400;
-                    baseHeight = 600;
-                    const windowRatio = window.innerWidth / window.innerHeight;
-                    const gameRatio = baseWidth / baseHeight;
+                if (windowRatio < gameRatio) {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerWidth / gameRatio;
+                } else {
+                    canvas.height = window.innerHeight;
+                    canvas.width = window.innerHeight * gameRatio;
+                }
 
-                    if (windowRatio < gameRatio) {
-                        canvas.width = window.innerWidth;
-                        canvas.height = window.innerWidth / gameRatio;
+                scaleFactor = canvas.width / baseWidth;
+
+                // Adjust game elements based on new scale
+                if (bird) {
+                    bird.width = 4;
+                    bird.height = 4;
+                }
+            }
+            const SCORE_TO_BOSS = 1;
+
+            // Bird object
+            const Bird = {
+                x: 50,
+                y: 300,
+                width: 4,
+                height: 4,
+                velocity: 0,
+                gravity: 0.5,
+                jumpStrength: -10,
+                image: new Image(),
+
+                draw() {
+                    ctx.fillStyle = "blue";
+                    ctx.fillRect(scale(this.x), scale(this.y), scale(this.width), scale(this.height));
+                },
+
+                update() {
+                    this.velocity += this.gravity;
+                    this.y += this.velocity;
+                },
+
+                jump() {
+                    this.velocity = this.jumpStrength;
+                },
+
+                shoot() {
+                    lasers.push(new Laser(this.x + this.width, this.y + this.height / 2));
+                },
+            };
+
+            // Pipe object
+            class Pipe {
+                constructor() {
+                    this.x = baseWidth;
+                    this.width = 50;
+                    this.topHeight = Math.random() * (baseHeight - 200) + 50;
+                    this.bottomY = this.topHeight + 250;
+                }
+                draw() {
+                    ctx.fillStyle = "green";
+                    ctx.fillRect(scale(this.x), 0, scale(this.width), scale(this.topHeight));
+                    ctx.fillRect(scale(this.x), scale(this.bottomY), scale(this.width), scale(baseHeight - this.bottomY));
+                }
+
+                update() {
+                    this.x -= 2;
+                }
+            }
+
+            // Boss object
+            const Boss = {
+                x: baseWidth,
+                y: baseHeight / 2 - 50,
+                width: 100,
+                height: 100,
+                health: 200,
+                maxHealth: 200,
+                moveAmplitude: 100,
+                moveSpeed: 0.02,
+                moveAngle: 0,
+                initialY: 0,
+
+                draw() {
+                    ctx.fillStyle = "red";
+                    ctx.fillRect(scale(this.x), scale(this.y), scale(this.width), scale(this.height));
+
+                    // Draw health bar
+                    ctx.fillStyle = "green";
+                    const healthBarWidth = (this.width * this.health) / this.maxHealth;
+                    ctx.fillRect(scale(this.x), scale(this.y - 20), scale(healthBarWidth), scale(10));
+                },
+
+                update() {
+                    if (this.x > baseWidth - 150) {
+                        this.x -= 1;
                     } else {
-                        canvas.height = window.innerHeight;
-                        canvas.width = window.innerHeight * gameRatio;
+                        this.moveAngle += this.moveSpeed;
+                        this.y = this.initialY + Math.sin(this.moveAngle) * this.moveAmplitude;
                     }
+                },
 
-                    scaleFactor = canvas.width / baseWidth;
-
-                    // Adjust game elements based on new scale
-                    if (bird) {
-                        bird.width = 4 * scaleFactor;
-                        bird.height = 4 * scaleFactor;
-                    }
+                reset() {
+                    this.x = baseWidth;
+                    this.y = baseHeight / 2 - 50;
+                    this.health = this.maxHealth;
+                    this.moveAngle = 0;
+                    this.initialY = this.y;
                 }
-                const SCORE_TO_BOSS = 1;
+            };
 
-                // Bird object
-                const Bird = {
-                    x: 50,
-                    y: 300,
-                    width: 4,
-                    height: 4,
-                    velocity: 0,
-                    gravity: 0.5,
-                    jumpStrength: -10,
-                    image: new Image(),
-
-                    draw() {
-                        ctx.fillStyle = "blue";
-                        //ctx.fillRect(this.x, this.y, this.width, this.height);
-                        ctx.fillRect(
-                            this.x * scaleFactor,
-                            this.y * scaleFactor,
-                            this.width,
-                            this.height
-                        );
-                        // Uncomment the line below and set the correct path when you have the image
-                        // ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-                    },
-
-                    update() {
-                        this.velocity += this.gravity;
-                        this.y += this.velocity;
-                    },
-
-                    jump() {
-                        this.velocity = this.jumpStrength;
-                    },
-
-                    shoot() {
-                        lasers.push(
-                            new Laser(
-                                (this.x + this.width) * scaleFactor, // Start laser at the bird's right side
-                                (this.y + this.height / 2) * scaleFactor // Fire from the bird's middle
-                            )
-                        );
-                    },
-                };
-
-                // Pipe object
-                class Pipe {
-                    constructor() {
-                        this.x = baseWidth;
-                        this.width = 50;
-                        this.topHeight =
-                            Math.random() * (baseHeight - 200) + 50;
-                        this.bottomY = this.topHeight + 250;
-                    }
-                    draw() {
-                        ctx.fillStyle = "green";
-
-                        ctx.fillRect(
-                            this.x * scaleFactor,
-                            0,
-                            this.width * scaleFactor,
-                            this.topHeight * scaleFactor
-                        );
-                        ctx.fillRect(
-                            this.x * scaleFactor,
-                            this.bottomY * scaleFactor,
-                            this.width * scaleFactor,
-                            (baseHeight - this.bottomY) * scaleFactor
-                        );
-                    }
-
-                    update() {
-                        this.x -= 2;
-                    }
+            // Laser object
+            class Laser {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.width = 20;
+                    this.height = 5;
+                    this.speed = 5;
+                    this.damage = 10;
                 }
 
-                // Boss object
-                const Boss = {
-                    x: baseWidth,
-                    y: baseHeight / 2 - 50,
-                    width: 100,
-                    height: 100,
-                    health: 200,
-                    moveAmplitude: 100, // Maximum distance to move up or down
-                    moveSpeed: 0.02, // Speed of the sinusoidal movement
-                    moveAngle: 0, // Current angle in the sin wave
-                    initialY: 0, // Store the initial Y position
-
-                    draw() {
-                        ctx.fillStyle = "red";
-                        ctx.fillRect(
-                            this.x * scaleFactor,
-                            this.y * scaleFactor,
-                            this.width * scaleFactor,
-                            this.height * scaleFactor
-                        );
-
-                        // Draw health bar
-                        ctx.fillStyle = "green";
-                        const healthBarWidth =
-                            ((this.width * this.health) / 100) * scaleFactor;
-                        ctx.fillRect(
-                            this.x * scaleFactor,
-                            (this.y - 20) * scaleFactor,
-                            healthBarWidth,
-                            10 * scaleFactor
-                        );
-                    },
-
-                    update() {
-                        // Move towards the left of the screen if not in position
-                        if (this.x > baseWidth - 150) {
-                            this.x -= 1;
-                        } else {
-                            // Sinusoidal up and down movement
-                            this.moveAngle += this.moveSpeed;
-                            this.y =
-                                this.initialY +
-                                Math.sin(this.moveAngle) * this.moveAmplitude;
-                        }
-
-                        // Ensure the boss stays within the screen bounds
-                        this.y = Math.max(
-                            0,
-                            Math.min(this.y, baseHeight - this.height)
-                        );
-                    },
-
-                    reset() {
-                        this.x = baseWidth;
-                        this.y = baseHeight / 2 - 50;
-                        this.health = 100;
-                        this.moveAngle = 0;
-                        this.initialY = this.y;
-                    },
-                };
-
-                // Laser object
-                class Laser {
-                    constructor(x, y) {
-                        this.x = x;
-                        this.y = y;
-                        this.width = 20 * scaleFactor; // Adjust width based on scale
-                        this.height = 5 * scaleFactor; // Adjust height based on scale
-                        this.speed = 5;
-                        this.damage = 10;
-                    }
-
-                    draw() {
-                        ctx.fillStyle = "blue";
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                    }
-
-                    update() {
-                        this.x += this.speed;
-                    }
+                draw() {
+                    ctx.fillStyle = "blue";
+                    ctx.fillRect(scale(this.x), scale(this.y), scale(this.width), scale(this.height));
                 }
 
-                // Game initialization
-                function init() {
-                    resizeCanvas();
-                    // ... existing initialization code ...
-                    window.addEventListener("resize", resizeCanvas);
-                    bird = Object.create(Bird);
-                    // bird.image.src = '/path/to/custom/bird/image.png'; // Uncomment and set the correct path
-                    pipes = [];
-                    lasers = [];
-                    score = 0;
-                    frames = 0;
-                    boss = null;
-
-                    // Handle input for both keyboard and touch events
-                    function handleInput(e) {
-                        // Prevent default behavior for space key and touch events
-                        e.preventDefault();
-
-                        // Start the game if it's not running
-                        if (!gameLoop) {
-                            init();
-                            gameLoop = setInterval(update, 1000 / 60); // 60 FPS
-                        }
-
-                        // Make the bird jump
-                        bird.jump();
-
-                        // Shoot if boss is present
-                        if (boss) {
-                            bird.shoot();
-                        }
-                    }
-
-                    // Event listener for keyboard (desktop)
-                    document.addEventListener("keydown", (e) => {
-                        if (e.code === "Space") {
-                            handleInput(e);
-                        }
-                    });
-
-                    // Event listeners   for touch (mobile)
-                    canvas.addEventListener("touchstart", handleInput);
-
-                    // Prevent default touch behavior to avoid scrolling
-                    canvas.addEventListener(
-                        "touchmove",
-                        function (e) {
-                            e.preventDefault();
-                        },
-                        { passive: false }
-                    );
+                update() {
+                    this.x += this.speed;
                 }
+            }
 
-                // Game update function
-                function update() {
-                    frames++;
+            // Game initialization
+            function init() {
+                resizeCanvas();
+                window.addEventListener("resize", resizeCanvas);
+                bird = Object.create(Bird);
+                pipes = [];
+                lasers = [];
+                score = 0;
+                frames = 0;
+                boss = null;
 
-                    // Clear canvas
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Handle input for both keyboard and touch events
+                function handleInput(e) {
+                    e.preventDefault();
 
-                    // Update and draw bird
-                    bird.update();
-                    bird.draw();
-
-                    // Update and draw pipes
-                    if (score < SCORE_TO_BOSS && frames % 150 === 0) {
-                        pipes.push(new Pipe());
+                    if (!gameLoop) {
+                        init();
+                        gameLoop = setInterval(update, 1000 / 60); // 60 FPS
                     }
-                    pipes.forEach((pipe, index) => {
-                        pipe.update();
-                        pipe.draw();
-                        if (pipe.x + pipe.width < 0) {
-                            pipes.splice(index, 1);
-                            score++;
-                        }
 
-                        // Check for collision with pipes
-                        if (
-                            bird.x < pipe.x + pipe.width &&
-                            bird.x + bird.width > pipe.x &&
-                            (bird.y < pipe.topHeight ||
-                                bird.y + bird.height > pipe.bottomY)
-                        ) {
-                            gameOver();
-                        }
-                    });
+                    bird.jump();
 
-                    // Boss fight
-                    if (score >= SCORE_TO_BOSS && !boss) {
-                        boss = Object.create(Boss);
-                        boss.reset();
-                    }
                     if (boss) {
-                        boss.update();
-                        boss.draw();
+                        bird.shoot();
+                    }
+                }
 
-                        // Update and draw lasers
-                        lasers.forEach((laser, index) => {
-                            laser.update();
-                            laser.draw();
-                            if (laser.x > baseWidth) {
-                                lasers.splice(index, 1);
-                            }
-                            // Check for collision with boss
-                            if (
-                                laser.x <
-                                    boss.x * scaleFactor +
-                                        boss.width * scaleFactor &&
-                                laser.x + laser.width > boss.x * scaleFactor &&
-                                laser.y <
-                                    boss.y * scaleFactor +
-                                        boss.height * scaleFactor &&
-                                laser.y + laser.height > boss.y * scaleFactor
-                            ) {
-                                boss.health -= laser.damage;
-                                lasers.splice(index, 1);
-                            }
-                        });
+                // Event listener for keyboard (desktop)
+                document.addEventListener("keydown", (e) => {
+                    if (e.code === "Space") {
+                        handleInput(e);
+                    }
+                });
 
-                        // Check if boss is defeated
-                        if (boss.health <= 0) {
-                            gameWin();
-                        }
+                // Event listener for touch (mobile)
+                canvas.addEventListener("touchstart", handleInput);
+                canvas.addEventListener("touchmove", (e) => e.preventDefault(), { passive: false });
+            }
+
+            // Game update function
+            function update() {
+                frames++;
+
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw bird
+                bird.update();
+                bird.draw();
+
+                // Update and draw pipes
+                if (score < SCORE_TO_BOSS && frames % 150 === 0) {
+                    pipes.push(new Pipe());
+                }
+                pipes.forEach((pipe, index) => {
+                    pipe.update();
+                    pipe.draw();
+                    if (pipe.x + pipe.width < 0) {
+                        pipes.splice(index, 1);
+                        score++;
                     }
 
-                    // Draw score
-                    ctx.fillStyle = "black";
-
-                    ctx.font = `${24}px Arial`;
-                    ctx.fillText(`Score: ${score}`, 10, 30);
-                    ctx.fillText(`X: ${bird.x}`, 10, 50);
-                    ctx.fillText(`Y: ${bird.y}`, 10, 70);
-                    if (boss) {
-                        ctx.fillText(
-                            `Health: ${boss.health}`,
-                            canvas.width - 140,
-                            30
-                        );
-                    }
-
-                    // Check for game over
-                    if (bird.y + bird.height > canvas.height || bird.y < 0) {
+                    if (
+                        bird.x < pipe.x + pipe.width &&
+                        bird.x + bird.width > pipe.x &&
+                        (bird.y < pipe.topHeight || bird.y + bird.height > pipe.bottomY)
+                    ) {
                         gameOver();
                     }
+                });
+
+                // Boss fight
+                if (score >= SCORE_TO_BOSS && !boss) {
+                    boss = Object.create(Boss);
+                    boss.reset();
+                }
+                if (boss) {
+                    boss.update();
+                    boss.draw();
+
+                    // Update and draw lasers
+                    lasers.forEach((laser, index) => {
+                        laser.update();
+                        laser.draw();
+                        if (laser.x > baseWidth) {
+                            lasers.splice(index, 1);
+                        }
+
+                        // Check for collision with boss
+                        if (
+                            laser.x < boss.x + boss.width &&
+                            laser.x + laser.width > boss.x &&
+                            laser.y < boss.y + boss.height &&
+                            laser.y + laser.height > boss.y
+                        ) {
+                            boss.health -= laser.damage;
+                            lasers.splice(index, 1);
+                        }
+                    });
+
+                    // Check if boss is defeated
+                    if (boss.health <= 0) {
+                        gameWin();
+                    }
                 }
 
-                function gameOver() {
-                    clearInterval(gameLoop);
-                    gameLoop = null;
-                    ctx.fillStyle = "black";
-
-                    ctx.font = `${48}px Arial`;
-                    ctx.fillText(
-                        "Game Over!",
-                        canvas.width / 2 - 100,
-                        canvas.height / 2
-                    );
-                    ctx.font = `${24}px Arial`;
-                    ctx.fillText(
-                        "Tap or press Space to restart",
-                        canvas.width / 2 - 120,
-                        canvas.height / 2 + 40
-                    );
-                }
-
-                function gameWin() {
-                    clearInterval(gameLoop);
-                    gameLoop = null;
-                    ctx.fillStyle = "black";
-                    ctx.font = "48px Arial";
-
-                    ctx.font = `${48}px Arial`;
-                    ctx.fillText(
-                        "You Win!",
-                        canvas.width / 2 - 70,
-                        canvas.height / 2
-                    );
-                    ctx.font = `${24}px Arial`;
-                    ctx.fillText(
-                        "Tap or press Space to restart",
-                        canvas.width / 2 - 100,
-                        canvas.height / 2 + 40
-                    );
-                }
-
-                // Start the game
-                init();
-
-                // Draw initial screen
+                // Draw score
                 ctx.fillStyle = "black";
-                ctx.font = "48px Arial";
-                ctx.fillText(
-                    "Flappy Bird",
-                    canvas.width / 2 - 100,
-                    canvas.height / 2
-                );
-                ctx.font = "24px Arial";
-                ctx.fillText(
-                    "Press Space to start",
-                    canvas.width / 2 - 80,
-                    canvas.height / 2 + 40
-                );
-            });
-        </script>
-    </body>
-</html>
+                ctx.font = `${24}px Arial`;
+                ctx.fillText(`Score: ${score}`, 10, 30);
+                if (boss) {
+                    ctx.fillText(`Health: ${boss.health}`, canvas.width - 140, 30);
+                }
+
+                // Check for game over
+                if (bird.y + bird.height > canvas.height || bird.y < 0) {
+                    gameOver();
+                }
+            }
+
+            function gameOver() {
+                clearInterval(gameLoop);
+                gameLoop = null;
+                ctx.fillStyle = "black";
+                ctx.font = `${48}px Arial`;
+                ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+                ctx.font = `${24}px Arial`;
+                ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 120, canvas.height / 2 + 40);
+            }
+
+            function gameWin() {
+                clearInterval(gameLoop);
+                gameLoop = null;
+                ctx.fillStyle = "black";
+                ctx.font = `${48}px Arial`;
+                ctx.fillText("You Win!", canvas.width / 2 - 70, canvas.height / 2);
+                ctx.font = `${24}px Arial`;
+                ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 100, canvas.height / 2 + 40);
+            }
+
+            // Start the game
+            init();
+
+            // Draw initial screen
+            ctx.fillStyle = "black";
+            ctx.font = "48px Arial";
+            ctx.fillText("Flappy Bird", canvas.width / 2 - 100, canvas.height / 2);
+            ctx.font = "24px Arial";
+            ctx.fillText("Press Space to start", canvas.width / 2 - 80, canvas.height / 2 + 40);
+        });
+    </script>
+</body
