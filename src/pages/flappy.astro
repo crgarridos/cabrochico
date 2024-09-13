@@ -29,13 +29,15 @@ import { BASE } from "@/constants";
                 let gameLoop;
                 let lastFrameTime = 0;
 
-                const SCORE_TO_BOSS = 0;
+                const SCORE_TO_BOSS = 5;
 
                 // Load images
                 const birdImg = new Image();
                 birdImg.src = `${BASE_DIR}/img/game/bird-midflap.png`;
                 const pipeImg = new Image();
-                pipeImg.src = `${BASE_DIR}/img/game/pipe.png`;
+                pipeImg.src = `${BASE_DIR}/img/game/pipe-top.png`;
+                const pipeBottomImg = new Image();
+                pipeBottomImg.src = `${BASE_DIR}/img/game/pipe-bottom.png`;
                 const bossImg = new Image();
                 bossImg.src = `${BASE_DIR}/img/game/buscemi.png`;
 
@@ -105,26 +107,53 @@ import { BASE } from "@/constants";
                 // Pipe object
                 class Pipe {
                     constructor() {
+                        // Fixed spacing between the top and bottom pipe
+                        this.gap = 200;
+
                         this.x = baseWidth;
                         this.width = 50;
-                        this.topHeight =
-                            Math.random() * (baseHeight - 200) + 50;
-                        this.bottomY = this.topHeight + 250;
+
+                        // Set the minimum and maximum heights for the top pipe
+                        this.minHeight = 50;
+                        this.maxHeight = baseHeight - this.gap;
+
+                        // Random height for the top pipe
+                        this.topY =
+                            Math.random() * (this.maxHeight - this.minHeight) +
+                            this.minHeight;
+
+                        // Bottom pipe starts after the gap
+                        this.bottomY = this.topY + this.gap;
+
+                        console.log(
+                            $canvas.height,
+                            this.maxHeight,
+                            scale(this.maxHeight)
+                        );
                     }
                     draw() {
-                        ctx.fillStyle = "green";
-                        ctx.fillRect(
+                        // Draw top pipe
+                        ctx.save();
+                        ctx.drawImage(
+                        pipeImg,
                             scale(this.x),
                             0,
                             scale(this.width),
-                            scale(this.topHeight)
+                            scale(this.topY)
                         );
-                        ctx.fillRect(
+                        ctx.restore();
+
+                        // Draw bottom pipe
+                        ctx.save();
+                        ctx.scale(1, -1); // Flip vertically
+                        ctx.drawImage(
+                        pipeImg,
                             scale(this.x),
-                            scale(this.bottomY),
+                            scale(-this.bottomY),
                             scale(this.width),
-                            scale(baseHeight - this.bottomY)
+                            scale(-(baseHeight - this.bottomY))
                         );
+                        ctx.restore();
                     }
 
                     update(deltaTime) {
@@ -319,7 +348,7 @@ import { BASE } from "@/constants";
                         if (
                             bird.x < pipe.x + pipe.width &&
                             bird.x + bird.width > pipe.x &&
-                            (bird.y < pipe.topHeight ||
+                            (bird.y < pipe.topY ||
                                 bird.y + bird.height > pipe.bottomY)
                         ) {
                             gameOver();
