@@ -46,7 +46,7 @@
                 scaleFactor = canvas.width / baseWidth;
             }
 
-            const SCORE_TO_BOSS = 0;
+            const SCORE_TO_BOSS = 10;
 
             // Bird object
             const Bird = {
@@ -55,9 +55,9 @@
                 width: 4,
                 height: 4,
                 velocity: 0,
-                gravity: 0.4,
-                jumpStrength: -10,
-                image: new Image(),
+                gravity: 0.3,
+                jumpStrength: -7,
+                image: new Image(), 
 
                 draw() {
                     ctx.fillStyle = "blue";
