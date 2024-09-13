@@ -18,7 +18,7 @@
             const ctx = canvas.getContext("2d");
 
             // Game variables
-            let bird, pipes, boss, lasers, score, frames;
+            let bird, pipes, boss, lasers, score;
             let scaleFactor, baseWidth, baseHeight;
             let gameLoop;
             let lastFrameTime = 0;
@@ -57,7 +57,7 @@
                 velocity: 0,
                 gravity: 0.3,
                 jumpStrength: -7,
-                image: new Image(), 
+                image: new Image(),
 
                 draw() {
                     ctx.fillStyle = "blue";
@@ -201,7 +201,6 @@
                 pipes = [];
                 lasers = [];
                 score = 0;
-                frames = 0;
                 boss = null;
                 lastFrameTime = performance.now();
 
@@ -237,8 +236,6 @@
                 const deltaTime = (timestamp - lastFrameTime) / 1000; // Time in seconds
                 lastFrameTime = timestamp;
 
-                frames++;
-
                 // Clear canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -247,7 +244,7 @@
                 bird.draw();
 
                 // Update and draw pipes
-                if (score < SCORE_TO_BOSS && frames % 150 === 0) {
+                if (score < SCORE_TO_BOSS && (pipes.length == 0 || pipes[pipes.length -1].x <= canvas.width / 4)) {
                     pipes.push(new Pipe());
                 }
                 pipes.forEach((pipe, index) => {
