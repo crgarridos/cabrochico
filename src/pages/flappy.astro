@@ -36,6 +36,7 @@ import { BASE } from "@/constants";
                 const bossMusic = new Audio(`${BASE_DIR}/img/game/boss-music.mp3`);
                 bossMusic.loop = true;
                 const laserMusic = new Audio(`${BASE_DIR}/img/game/retro-laser.mp3`);
+                const toastySound = new Audio(`${BASE_DIR}/img/game/toasty.mp3`);
                 // Load images
                 const backgroundImg = new Image();
                 backgroundImg.src = `${BASE_DIR}/img/game/background-night.png`;
@@ -224,6 +225,7 @@ import { BASE } from "@/constants";
                             // Check if it's time to attack based on health
                             if (this.health <= this.nextHealthThreshold) {
                                 this.attackPhase = "attacking";
+                                toastySound.play();
                             }
                         }
                         if (this.attackPhase === "attacking") {
