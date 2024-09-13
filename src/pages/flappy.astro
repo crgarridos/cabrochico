@@ -46,7 +46,7 @@
                 scaleFactor = canvas.width / baseWidth;
             }
 
-            const SCORE_TO_BOSS = 1;
+            const SCORE_TO_BOSS = 0;
 
             // Bird object
             const Bird = {
@@ -104,13 +104,13 @@
                 width: 100,
                 height: 100,
                 health: 200,
-                maxHealth: 200,
+                maxHealth: 2000,
                 moveAmplitude: 100,
                 moveSpeed: 0.02,
                 moveAngle: 0,
                 initialY: 0,
                 attackPhase: 'idle', // 'idle', 'attacking', 'returning'
-                attackSpeed: 100, // Speed of the boss during the attack
+                attackSpeed: 200, // Speed of the boss during the attack
                 initialX: baseWidth,
                 nextHealthThreshold: 200, // Track health thresholds for attack
 
@@ -296,6 +296,15 @@
                         }
                     });
 
+                    // Check if the bounding boxes of the bird and boss overlap
+                    if (
+                        bird.x < boss.x + boss.width &&
+                        bird.x + bird.width > boss.x &&
+                        bird.y < boss.y + boss.height &&
+                        bird.y + bird.height > boss.y) {
+                        gameOver();
+                    }
+
                     // Check if boss is defeated
                     if (boss.health <= 0) {
                         gameWin();
@@ -322,12 +331,12 @@
             }
 
             function gameOver() {
-                // gameLoop = null;
-                // ctx.fillStyle = "black";
-                // ctx.font = `${48}px Arial`;
-                // ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
-                // ctx.font = `${24}px Arial`;
-                // ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 120, canvas.height / 2 + 40);
+                gameLoop = null;
+                ctx.fillStyle = "black";
+                ctx.font = `${48}px Arial`;
+                ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+                ctx.font = `${24}px Arial`;
+                ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 120, canvas.height / 2 + 40);
             }
 
             function gameWin() {
@@ -349,9 +358,9 @@
             function drawInitialScreen() {
                 ctx.fillStyle = "black";
                 ctx.font = "48px Arial";
-                ctx.fillText("Flappy Bird", canvas.width / 2 - 100, canvas.height / 2);
+                ctx.fillText("Flappy Bird", canvas.width / 2 - 110, canvas.height / 2);
                 ctx.font = "24px Arial";
-                ctx.fillText("Press Space to start", canvas.width / 2 - 80, canvas.height / 2 + 40);
+                ctx.fillText("Tap or Press Space to start", canvas.width / 2 - 140, canvas.height / 2 + 40);
             }
 
             // Start by showing initial screen
