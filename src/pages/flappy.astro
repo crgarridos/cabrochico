@@ -109,6 +109,10 @@
                 moveSpeed: 0.02,
                 moveAngle: 0,
                 initialY: 0,
+                attackPhase: 'idle', // 'idle', 'attacking', 'returning'
+                attackSpeed: 100, // Speed of the boss during the attack
+                initialX: baseWidth,
+                nextHealthThreshold: 200, // Track health thresholds for attack
 
                 draw() {
                     ctx.fillStyle = "red";
@@ -121,11 +125,37 @@
                 },
 
                 update(deltaTime) {
-                    if (this.x > baseWidth - 150) {
-                        this.x -= 100 * deltaTime; // Increased speed
-                    } else {
-                        this.moveAngle += this.moveSpeed;
-                        this.y = this.initialY + Math.sin(this.moveAngle) * this.moveAmplitude;
+                    // Check if health has crossed a threshold
+                    if (this.attackPhase === 'idle') {
+                        // Regular movement
+                        if (this.x > baseWidth - 150) {
+                            this.x -= 100 * deltaTime; // Move boss towards center
+                        } else {
+                            this.moveAngle += this.moveSpeed;
+                            this.y = this.initialY + Math.sin(this.moveAngle) * this.moveAmplitude;
+                        }
+
+                        // Check if it's time to attack based on health
+                        if (this.health <= this.nextHealthThreshold) {
+                            this.attackPhase = 'attacking';
+                        }
+                    }
+                    if (this.attackPhase === 'attacking') {
+                        // Move horizontally towards x = 0
+                        if (this.x > 0) {
+                            this.x -= this.attackSpeed * deltaTime;
+                        } else {
+                            this.attackPhase = 'returning';
+                            this.nextHealthThreshold -= 50; // Track health after attack
+                        }
+                    }
+                     if (this.attackPhase === 'returning') {
+                        // Move back to original position
+                        if (this.x < this.originalX) {
+                            this.x += this.attackSpeed * deltaTime;
+                        } else {
+                            this.attackPhase = 'idle';
+                        }
                     }
                 },
 
@@ -135,8 +165,12 @@
                     this.health = this.maxHealth;
                     this.moveAngle = 0;
                     this.initialY = this.y;
+                    this.originalX = baseWidth;
+                    this.attackPhase = 'idle';
+                    this.nextHealthThreshold = this.maxHealth - 50;
                 }
             };
+
 
             // Laser object
             class Laser {
@@ -288,12 +322,12 @@
             }
 
             function gameOver() {
-                gameLoop = null;
-                ctx.fillStyle = "black";
-                ctx.font = `${48}px Arial`;
-                ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
-                ctx.font = `${24}px Arial`;
-                ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 120, canvas.height / 2 + 40);
+                // gameLoop = null;
+                // ctx.fillStyle = "black";
+                // ctx.font = `${48}px Arial`;
+                // ctx.fillText("Game Over!", canvas.width / 2 - 100, canvas.height / 2);
+                // ctx.font = `${24}px Arial`;
+                // ctx.fillText("Tap or press Space to restart", canvas.width / 2 - 120, canvas.height / 2 + 40);
             }
 
             function gameWin() {
