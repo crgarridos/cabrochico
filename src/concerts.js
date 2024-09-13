@@ -126,7 +126,7 @@ export const CONCERTS = [
         date: "2024-10-12",
         place: "Amul Solo",
         city: "Lille",
-        bands: ["TBD"],
+        bands: ["No Sleep Till Dawn"],
     },
     {
         date: "2024-09-21",
