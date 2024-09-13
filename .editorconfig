@@ -33,4 +33,4 @@ indent_size = 4
 
 # YAML files (e.g., for CI/CD or other configuration)
 [*.yml]
-indent_size = 4
+indent_size = 2
