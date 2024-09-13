@@ -32,6 +32,8 @@ import { BASE } from "@/constants";
                 const SCORE_TO_BOSS = 5;
 
                 // Load images
+                const backgroundImg = new Image();
+                backgroundImg.src = `${BASE_DIR}/img/game/background-night.png`;
                 const birdImg = new Image();
                 birdImg.src = `${BASE_DIR}/img/game/bird-midflap.png`;
                 const pipeImg = new Image();
@@ -261,7 +263,7 @@ import { BASE } from "@/constants";
                     }
 
                     draw() {
-                        ctx.fillStyle = "blue";
+                        ctx.fillStyle = "red";
                         ctx.fillRect(
                             scale(this.x),
                             scale(this.y),
@@ -324,6 +326,7 @@ import { BASE } from "@/constants";
 
                     // Clear canvas
                     ctx.clearRect(0, 0, $canvas.width, $canvas.height);
+                    ctx.drawImage(backgroundImg, 0, 0, $canvas.width, $canvas.height)
 
                     // Update and draw bird
                     bird.update(deltaTime);
@@ -485,7 +488,11 @@ import { BASE } from "@/constants";
 
                 // Start by showing initial screen
                 resizeCanvas();
-                drawInitialScreen();
+
+                backgroundImg.onload = () => {
+                    ctx.drawImage(backgroundImg, 0, 0, $canvas.width, $canvas.height)
+                    drawInitialScreen();
+                }
 
                 // Event listener for starting the game
                 document.addEventListener("keydown", (e) => {
