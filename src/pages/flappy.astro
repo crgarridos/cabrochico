@@ -31,6 +31,11 @@ import { BASE } from "@/constants";
 
                 const SCORE_TO_BOSS = 5;
 
+                const backgroundMusic = new Audio(`${BASE_DIR}/img/game/muffled-party-music.mp3`);
+                backgroundMusic.loop = true;
+                const bossMusic = new Audio(`${BASE_DIR}/img/game/boss-music.mp3`);
+                bossMusic.loop = true;
+                const laserMusic = new Audio(`${BASE_DIR}/img/game/retro-laser.mp3`);
                 // Load images
                 const backgroundImg = new Image();
                 backgroundImg.src = `${BASE_DIR}/img/game/background-night.png`;
@@ -97,6 +102,7 @@ import { BASE } from "@/constants";
                     },
 
                     shoot() {
+                        laserMusic.play();
                         lasers.push(
                             new Laser(
                                 this.x + this.width,
@@ -364,6 +370,8 @@ import { BASE } from "@/constants";
                         boss.reset();
                     }
                     if (boss) {
+                        backgroundMusic.pause();
+                        bossMusic.play()
                         boss.update(deltaTime);
                         boss.draw();
 
@@ -427,6 +435,8 @@ import { BASE } from "@/constants";
                 }
 
                 function gameOver() {
+                    backgroundMusic.pause();
+                    bossMusic.pause();
                     gameLoop = null;
                     ctx.fillStyle = "black";
                     ctx.textAlign = "center";
@@ -445,6 +455,8 @@ import { BASE } from "@/constants";
                 }
 
                 function gameWin() {
+                    backgroundMusic.pause();
+                    bossMusic.pause();
                     gameLoop = null;
                     ctx.fillStyle = "black";
                     ctx.textAlign = "center";
@@ -466,6 +478,7 @@ import { BASE } from "@/constants";
                     if (!gameLoop) {
                         init();
                         gameLoop = requestAnimationFrame(update);
+                        backgroundMusic.play();
                     }
                 }
 
