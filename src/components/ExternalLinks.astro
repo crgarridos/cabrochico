@@ -33,7 +33,7 @@ const LINKS = [
     {
         LINKS.map(({ name, icon, url }) => (
             <a href={url} target="_blank">
-                <img src={`${BASE}/img/network/${icon}`} alt={`Logo de ${name}`} />
+                <img src={`${BASE}/img/network/${icon}`} alt={`Logo de ${name}`} title={name} />
             </a>
         ))
     }
