@@ -137,6 +137,7 @@ export const CONCERTS = [
         date: "2024-09-20",
         place: "Les 3 Auvergnats",
         city: "Beaumont, Belgique",
+        bands: ["Billions of Comrades"],
     },
     {
         date: "2024-09-28",
