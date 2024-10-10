@@ -19,14 +19,14 @@ import { BASE } from "@/constants";
         ></canvas>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const $canvas = document.getElementById("gameCanvas");
+                const $canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
                 const BASE_DIR = $canvas.dataset.base;
                 const ctx = $canvas.getContext("2d");
 
                 // Game variables
-                let bird, pipes, boss, lasers, score;
-                let scaleFactor, baseWidth, baseHeight;
-                let gameLoop;
+                let bird: { jump: () => void; shoot: () => void; update: (arg0: number) => void; draw: () => void; x: number; width: any; y: number; height: any; }, pipes, boss: { reset: () => void; update: (arg0: number) => void; draw: () => void; x: number; width: any; y: number; height: any; health: number; }, lasers, score: number;
+                let scaleFactor: number, baseWidth: number, baseHeight: number;
+                let gameLoop: number;
                 let lastFrameTime = 0;
 
                 const SCORE_TO_BOSS = 5;
@@ -50,7 +50,7 @@ import { BASE } from "@/constants";
                 bossImg.src = `${BASE_DIR}/img/game/buscemi.png`;
 
                 // Utility function for scaling
-                function scale(value) {
+                function scale(value: number) {
                     return value * scaleFactor;
                 }
 
@@ -93,7 +93,7 @@ import { BASE } from "@/constants";
                         );
                     },
 
-                    update(deltaTime) {
+                    update(deltaTime: any) {
                         this.velocity += this.gravity;
                         this.y += this.velocity;
                     },
@@ -115,6 +115,13 @@ import { BASE } from "@/constants";
 
                 // Pipe object
                 class Pipe {
+                    gap: number;
+                    x: number;
+                    width: number;
+                    minHeight: number;
+                    maxHeight: number;
+                    topY: any;
+                    bottomY: any;
                     constructor() {
                         // Fixed spacing between the top and bottom pipe
                         this.gap = 200;
@@ -165,7 +172,7 @@ import { BASE } from "@/constants";
                         ctx.restore();
                     }
 
-                    update(deltaTime) {
+                    update(deltaTime: number) {
                         this.x -= 150 * deltaTime; // Increased speed
                     }
                 }
@@ -208,7 +215,7 @@ import { BASE } from "@/constants";
                         );
                     },
 
-                    update(deltaTime) {
+                    update(deltaTime: number) {
                         // Check if health has crossed a threshold
                         if (this.attackPhase === "idle") {
                             // Regular movement
@@ -261,7 +268,13 @@ import { BASE } from "@/constants";
 
                 // Laser object
                 class Laser {
-                    constructor(x, y) {
+                    x: number;
+                    y: number;
+                    width: number;
+                    height: number;
+                    speed: number;
+                    damage: number;
+                    constructor(x: any, y: any) {
                         this.x = x;
                         this.y = y;
                         this.width = 20;
@@ -280,7 +293,7 @@ import { BASE } from "@/constants";
                         );
                     }
 
-                    update(deltaTime) {
+                    update(deltaTime: number) {
                         this.x += this.speed * deltaTime;
                     }
                 }
@@ -297,7 +310,7 @@ import { BASE } from "@/constants";
                     lastFrameTime = performance.now();
 
                     // Handle input for both keyboard and touch events
-                    function handleInput(e) {
+                    function handleInput(e: KeyboardEvent) {
                         e.preventDefault();
 
                         if (!gameLoop) {
@@ -328,7 +341,7 @@ import { BASE } from "@/constants";
                 }
 
                 // Game update function
-                function update(timestamp) {
+                function update(timestamp: number) {
                     const deltaTime = (timestamp - lastFrameTime) / 1000; // Time in seconds
                     lastFrameTime = timestamp;
 
@@ -348,7 +361,7 @@ import { BASE } from "@/constants";
                     ) {
                         pipes.push(new Pipe());
                     }
-                    pipes.forEach((pipe, index) => {
+                    pipes.forEach((pipe: { update: (arg0: number) => void; draw: () => void; x: number; width: any; topY: number; bottomY: number; }, index: any) => {
                         pipe.update(deltaTime);
                         pipe.draw();
                         if (pipe.x + pipe.width < 0) {
@@ -378,7 +391,7 @@ import { BASE } from "@/constants";
                         boss.draw();
 
                         // Update and draw lasers
-                        lasers.forEach((laser, index) => {
+                        lasers.forEach((laser: { update: (arg0: number) => void; draw: () => void; x: number; width: any; y: number; height: any; damage: number; }, index: any) => {
                             laser.update(deltaTime);
                             laser.draw();
                             if (laser.x > baseWidth) {
