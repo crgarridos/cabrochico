@@ -84,7 +84,7 @@ import { BASE } from "@/constants";
 
                 // Game initialization
                 function init() {
-                    // removeStartGameListeners(); TODO
+                    removeStartGameListeners();
 
                     bird = new Bird(canvasHelper, birdImg);
                     pipes = [];
@@ -277,6 +277,9 @@ import { BASE } from "@/constants";
                     backgroundMusic.pause();
                     bossMusic.pause();
                     gameLoop = null;
+                    setTimeout(() => {
+                        addStartGameListeners()
+                    }, 1500)
                 }
 
                 function startGame() {
