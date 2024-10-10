@@ -1,0 +1,349 @@
+---
+import { BASE } from "@/constants";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Buscemi Revenga!</title>
+        <style>
+            canvas {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="gameCanvas" width="400" height="600" data-base={BASE}
+        ></canvas>
+        <script>
+            import { Boss } from "./Boss";
+            import { GameCanvasContext } from "./GameCanvasContext";
+            import { Pipe } from "./Pipe";
+            import { Bird } from "./Bird";
+            import { Laser } from "./Laser";
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const $canvas = document.getElementById(
+                    "gameCanvas"
+                ) as HTMLCanvasElement;
+                const BASE_DIR = $canvas.dataset.base;
+                const ctx2d = $canvas.getContext("2d");
+
+                // Game variables
+                let bird: Bird,
+                    pipes: Pipe[],
+                    boss: Boss,
+                    lasers: Laser[],
+                    score: number;
+                let gameLoop: number;
+                let lastFrameTime = 0;
+
+                const SCORE_TO_BOSS = 1;
+
+                const backgroundMusic = new Audio(
+                    `${BASE_DIR}/img/game/muffled-party-music.mp3`
+                );
+                backgroundMusic.loop = true;
+                const bossMusic = new Audio(
+                    `${BASE_DIR}/img/game/boss-music.mp3`
+                );
+                bossMusic.loop = true;
+                const laserMusic = new Audio(
+                    `${BASE_DIR}/img/game/retro-laser.mp3`
+                );
+                const toastySound = new Audio(
+                    `${BASE_DIR}/img/game/toasty.mp3`
+                );
+                // Load images
+                const backgroundImg = new Image();
+                backgroundImg.src = `${BASE_DIR}/img/game/background-night.png`;
+                const birdImg = new Image();
+                birdImg.src = `${BASE_DIR}/img/game/bird-midflap.png`;
+                const pipeImg = new Image();
+                pipeImg.src = `${BASE_DIR}/img/game/pipe-top.png`;
+                const pipeBottomImg = new Image();
+                pipeBottomImg.src = `${BASE_DIR}/img/game/pipe-bottom.png`;
+                const bossImg = new Image();
+                bossImg.src = `${BASE_DIR}/img/game/buscemi.png`;
+
+                const scalableCtx = new GameCanvasContext(ctx2d, $canvas.width);
+
+                function resizeCanvas() {
+                    const newSize = scalableCtx.calculateCanvasSize();
+                    $canvas.width = newSize.width;
+                    $canvas.height = newSize.height;
+                }
+
+                // Game initialization
+                function init() {
+                    // removeStartGameListeners(); TODO
+                    resizeCanvas();
+                    window.addEventListener("resize", resizeCanvas);
+
+                    bird = new Bird(scalableCtx, birdImg);
+                    pipes = [];
+                    lasers = [];
+                    score = 0;
+                    boss = null;
+                    lastFrameTime = performance.now();
+
+                    // Handle input for both keyboard and touch events
+                    function handleInput(e: KeyboardEvent) {
+                        e.preventDefault();
+
+                        bird.jump();
+
+                        if (boss) {
+                            laserMusic.play();
+                            lasers.push(bird.shoot());
+                        }
+                    }
+
+                    // Event listener for keyboard (desktop)
+                    document.addEventListener("keydown", (e) => {
+                        if (e.code === "Space") {
+                            handleInput(e);
+                        }
+                    });
+
+                    // Event listener for touch (mobile)
+                    $canvas.addEventListener("touchstart", handleInput);
+                    $canvas.addEventListener(
+                        "touchmove",
+                        (e) => e.preventDefault(),
+                        { passive: false }
+                    );
+                }
+
+                // Game update function
+                function update(timestamp: number) {
+                    const deltaTime = (timestamp - lastFrameTime) / 1000; // Time in seconds
+                    lastFrameTime = timestamp;
+
+                    // Clear canvas
+                    ctx2d.clearRect(0, 0, $canvas.width, $canvas.height);
+                    ctx2d.drawImage(
+                        backgroundImg,
+                        0,
+                        0,
+                        $canvas.width,
+                        $canvas.height
+                    );
+
+                    // Update and draw bird
+                    bird.update(deltaTime);
+                    bird.draw();
+
+                    // Update and draw pipes
+                    if (
+                        score < SCORE_TO_BOSS &&
+                        (pipes.length == 0 ||
+                            pipes[pipes.length - 1].x <= $canvas.width / 4)
+                    ) {
+                        pipes.push(new Pipe(scalableCtx, pipeImg));
+                    }
+                    pipes.forEach((pipe: Pipe, index: number) => {
+                        pipe.update(deltaTime);
+                        pipe.draw();
+                        if (pipe.x + pipe.width < 0) {
+                            pipes.splice(index, 1);
+                            score++;
+                        }
+
+                        if (
+                            bird.x < pipe.x + pipe.width &&
+                            bird.x + bird.width > pipe.x &&
+                            (bird.y < pipe.topY ||
+                                bird.y + bird.height > pipe.bottomY)
+                        ) {
+                            gameOver();
+                        }
+                    });
+
+                    // Boss fight
+                    if (score >= SCORE_TO_BOSS && !boss) {
+                        boss = new Boss(scalableCtx, bossImg);
+                        boss.reset();
+                    }
+                    if (boss) {
+                        backgroundMusic.pause();
+                        bossMusic.play();
+                        boss.update(deltaTime);
+                        boss.draw();
+
+                        // Update and draw lasers
+                        lasers.forEach((laser: Laser, index: number) => {
+                            laser.update(deltaTime);
+                            laser.draw();
+                            if (laser.x > scalableCtx.baseWidth) {
+                                lasers.splice(index, 1);
+                            }
+
+                            // Check for collision with boss
+                            if (
+                                laser.x < boss.x + boss.width &&
+                                laser.x + laser.width > boss.x &&
+                                laser.y < boss.y + boss.height &&
+                                laser.y + laser.height > boss.y
+                            ) {
+                                boss.health -= laser.damage;
+                                lasers.splice(index, 1);
+                            }
+                        });
+
+                        // Check if the bounding boxes of the bird and boss overlap
+                        if (
+                            bird.x < boss.x + boss.width &&
+                            bird.x + bird.width > boss.x &&
+                            bird.y < boss.y + boss.height &&
+                            bird.y + bird.height > boss.y
+                        ) {
+                            gameOver();
+                        }
+
+                        // Check if boss is defeated
+                        if (boss.health <= 0) {
+                            gameWin();
+                        }
+                    }
+
+                    // Draw score
+                    ctx2d.fillStyle = "black";
+                    ctx2d.font = "24px Arial";
+                    ctx2d.fillText(`Score: ${score}`, 10, 30);
+                    if (boss) {
+                        ctx2d.fillText(
+                            `Health: ${boss.health}`,
+                            $canvas.width - 140,
+                            30
+                        );
+                    }
+
+                    // Check for game over
+                    if (bird.y + bird.height > $canvas.height || bird.y < 0) {
+                        gameOver();
+                    }
+
+                    // Request next frame
+                    if (gameLoop) {
+                        requestAnimationFrame(update);
+                    }
+                }
+
+                function gameOver() {
+                    backgroundMusic.pause();
+                    bossMusic.pause();
+                    gameLoop = null;
+                    ctx2d.fillStyle = "black";
+                    ctx2d.textAlign = "center";
+                    ctx2d.font = "48px Arial";
+                    ctx2d.fillText(
+                        "Game Over!",
+                        $canvas.width / 2,
+                        $canvas.height / 2
+                    );
+                    ctx2d.font = "24px Arial";
+                    ctx2d.fillText(
+                        "Tap or press Space to restart",
+                        $canvas.width / 2,
+                        $canvas.height / 2 + 40
+                    );
+                }
+
+                function gameWin() {
+                    backgroundMusic.pause();
+                    bossMusic.pause();
+                    gameLoop = null;
+                    ctx2d.fillStyle = "black";
+                    ctx2d.textAlign = "center";
+                    ctx2d.font = "48px Arial";
+                    ctx2d.fillText(
+                        "You Win!",
+                        $canvas.width / 2,
+                        $canvas.height / 2
+                    );
+                    ctx2d.font = "24px Arial";
+                    ctx2d.fillText(
+                        "Tap or press Space to restart",
+                        $canvas.width / 2,
+                        $canvas.height / 2 + 40
+                    );
+                }
+
+                function startGame() {
+                    if (!gameLoop) {
+                        init();
+                        gameLoop = requestAnimationFrame(update);
+                        backgroundMusic.play();
+                    }
+                }
+
+                function drawInitialScreen() {
+                    ctx2d.fillStyle = "black";
+                    ctx2d.font = "48px Arial";
+                    ctx2d.textAlign = "center";
+                    ctx2d.fillText(
+                        "Buscemi Revenga!",
+                        $canvas.width / 2,
+                        $canvas.height / 2
+                    );
+                    ctx2d.font = "24px Arial";
+                    ctx2d.fillText(
+                        "Tap or Press Space to start",
+                        $canvas.width / 2,
+                        $canvas.height / 2 + 40
+                    );
+                }
+
+                // Start by showing initial screen
+                resizeCanvas();
+
+                backgroundImg.onload = () => {
+                    ctx2d.drawImage(
+                        backgroundImg,
+                        0,
+                        0,
+                        $canvas.width,
+                        $canvas.height
+                    );
+                    drawInitialScreen();
+                };
+
+                // Event listener for starting the game
+                function startGameFromKeyListener(e) {
+                    if (e.code === "Space") {
+                        startGame();
+                    }
+                }
+                function startGameFromTouchListener() {
+                    startGame();
+                }
+                addStartGameListeners();
+
+                function addStartGameListeners() {
+                    document.addEventListener(
+                        "keydown",
+                        startGameFromKeyListener
+                    );
+                    document.addEventListener(
+                        "touchstart",
+                        startGameFromTouchListener
+                    );
+                }
+
+                function removeStartGameListeners() {
+                    document.removeEventListener(
+                        "keydown",
+                        startGameFromKeyListener
+                    );
+                    document.removeEventListener(
+                        "touchstart",
+                        startGameFromTouchListener
+                    );
+                }
+            });
+        </script>
+    </body>
+</html>
