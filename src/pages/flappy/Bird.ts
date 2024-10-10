@@ -36,7 +36,6 @@ export class Bird extends SolidElement {
     }
 
     shoot(): Laser {
-        // laserMusic.play(); TODO
         return new Laser(
             this.ctx,
             this.x + this.width,

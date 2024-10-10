@@ -100,7 +100,7 @@ import { BASE } from "@/constants";
 
                         bird.jump();
 
-                        if (boss) {
+                        if (boss && gameLoop ) {
                             laserMusic.play();
                             lasers.push(bird.shoot());
                         }
@@ -293,7 +293,7 @@ import { BASE } from "@/constants";
                 function drawInitialScreen() {
                     const ctx2d = canvasHelper.ctx;
                     ctx2d.fillStyle = "black";
-                    ctx2d.font = "48px Arial";
+                    ctx2d.font = "42px Arial";
                     ctx2d.textAlign = "center";
                     ctx2d.fillText(
                         "Buscemi Revenga!",
@@ -312,7 +312,7 @@ import { BASE } from "@/constants";
                     const ctx2d = canvasHelper.ctx;
                     ctx2d.fillStyle = "black";
                     ctx2d.textAlign = "center";
-                    ctx2d.font = "48px Arial";
+                    ctx2d.font = "42px Arial";
                     ctx2d.fillText(
                         victory ? "You Win!" : "Game Over!",
                         $canvas.width / 2,
