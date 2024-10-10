@@ -11,15 +11,15 @@ import { BASE } from "@/constants";
         <style>
             canvas {
                 border: 1px solid black;
+                height: 100%;
             }
         </style>
     </head>
     <body>
-        <canvas id="gameCanvas" width="400" height="600" data-base={BASE}
-        ></canvas>
+        <canvas id="gameCanvas" data-basedir={BASE}></canvas>
         <script>
             import { Boss } from "./Boss";
-            import { GameCanvasContext } from "./GameCanvasContext";
+            import { GameCanvasContext as GameCanvasHelper } from "./GameCanvasHelper";
             import { Pipe } from "./Pipe";
             import { Bird } from "./Bird";
             import { Laser } from "./Laser";
@@ -28,8 +28,14 @@ import { BASE } from "@/constants";
                 const $canvas = document.getElementById(
                     "gameCanvas"
                 ) as HTMLCanvasElement;
-                const BASE_DIR = $canvas.dataset.base;
-                const ctx2d = $canvas.getContext("2d");
+                const BASE_DIR = $canvas.dataset.basedir;
+                const GAME_STATE = {
+                    INIT: "Initial state",
+                    PLAYING: "Game in progress",
+                    FIGHT: "Fighting Buscemi",
+                    LOST: "Lost",
+                    WIN: "Win",
+                };
 
                 // Game variables
                 let bird: Bird,
@@ -39,6 +45,7 @@ import { BASE } from "@/constants";
                     score: number;
                 let gameLoop: number;
                 let lastFrameTime = 0;
+                let gameState = GAME_STATE.INIT;
 
                 const SCORE_TO_BOSS = 1;
 
@@ -68,26 +75,24 @@ import { BASE } from "@/constants";
                 const bossImg = new Image();
                 bossImg.src = `${BASE_DIR}/img/game/buscemi.png`;
 
-                const scalableCtx = new GameCanvasContext(ctx2d, $canvas.width);
+                const canvasHelper = new GameCanvasHelper($canvas);
 
                 function resizeCanvas() {
-                    const newSize = scalableCtx.calculateCanvasSize();
-                    $canvas.width = newSize.width;
-                    $canvas.height = newSize.height;
+                    canvasHelper.resizeCanvas();
+                    draw();
                 }
 
                 // Game initialization
                 function init() {
                     // removeStartGameListeners(); TODO
-                    resizeCanvas();
-                    window.addEventListener("resize", resizeCanvas);
 
-                    bird = new Bird(scalableCtx, birdImg);
+                    bird = new Bird(canvasHelper, birdImg);
                     pipes = [];
                     lasers = [];
                     score = 0;
                     boss = null;
                     lastFrameTime = performance.now();
+                    gameState = GAME_STATE.PLAYING;
 
                     // Handle input for both keyboard and touch events
                     function handleInput(e: KeyboardEvent) {
@@ -122,31 +127,18 @@ import { BASE } from "@/constants";
                     const deltaTime = (timestamp - lastFrameTime) / 1000; // Time in seconds
                     lastFrameTime = timestamp;
 
-                    // Clear canvas
-                    ctx2d.clearRect(0, 0, $canvas.width, $canvas.height);
-                    ctx2d.drawImage(
-                        backgroundImg,
-                        0,
-                        0,
-                        $canvas.width,
-                        $canvas.height
-                    );
-
-                    // Update and draw bird
                     bird.update(deltaTime);
-                    bird.draw();
 
-                    // Update and draw pipes
+                    // Update pipes
                     if (
                         score < SCORE_TO_BOSS &&
                         (pipes.length == 0 ||
-                            pipes[pipes.length - 1].x <= $canvas.width / 4)
+                            pipes[pipes.length - 1].x <= $canvas.width / 2)
                     ) {
-                        pipes.push(new Pipe(scalableCtx, pipeImg));
+                        pipes.push(new Pipe(canvasHelper, pipeImg));
                     }
                     pipes.forEach((pipe: Pipe, index: number) => {
                         pipe.update(deltaTime);
-                        pipe.draw();
                         if (pipe.x + pipe.width < 0) {
                             pipes.splice(index, 1);
                             score++;
@@ -158,26 +150,26 @@ import { BASE } from "@/constants";
                             (bird.y < pipe.topY ||
                                 bird.y + bird.height > pipe.bottomY)
                         ) {
-                            gameOver();
+                            gameState = GAME_STATE.LOST;
+                            stopGame();
                         }
                     });
 
                     // Boss fight
                     if (score >= SCORE_TO_BOSS && !boss) {
-                        boss = new Boss(scalableCtx, bossImg);
+                        boss = new Boss(canvasHelper, bossImg);
                         boss.reset();
+                        gameState = GAME_STATE.FIGHT;
                     }
                     if (boss) {
                         backgroundMusic.pause();
                         bossMusic.play();
                         boss.update(deltaTime);
-                        boss.draw();
 
                         // Update and draw lasers
                         lasers.forEach((laser: Laser, index: number) => {
                             laser.update(deltaTime);
-                            laser.draw();
-                            if (laser.x > scalableCtx.baseWidth) {
+                            if (laser.x > canvasHelper.width) {
                                 lasers.splice(index, 1);
                             }
 
@@ -200,30 +192,25 @@ import { BASE } from "@/constants";
                             bird.y < boss.y + boss.height &&
                             bird.y + bird.height > boss.y
                         ) {
-                            gameOver();
+                            stopGame();
+                            gameState = GAME_STATE.LOST;
                         }
 
                         // Check if boss is defeated
                         if (boss.health <= 0) {
-                            gameWin();
+                            stopGame();
+                            gameState = GAME_STATE.WIN;
                         }
                     }
 
                     // Draw score
-                    ctx2d.fillStyle = "black";
-                    ctx2d.font = "24px Arial";
-                    ctx2d.fillText(`Score: ${score}`, 10, 30);
-                    if (boss) {
-                        ctx2d.fillText(
-                            `Health: ${boss.health}`,
-                            $canvas.width - 140,
-                            30
-                        );
-                    }
 
-                    // Check for game over
+                    draw();
+
+                    // Check for  game over
                     if (bird.y + bird.height > $canvas.height || bird.y < 0) {
-                        gameOver();
+                        gameState = GAME_STATE.LOST;
+                        stopGame();
                     }
 
                     // Request next frame
@@ -232,44 +219,59 @@ import { BASE } from "@/constants";
                     }
                 }
 
-                function gameOver() {
-                    backgroundMusic.pause();
-                    bossMusic.pause();
-                    gameLoop = null;
-                    ctx2d.fillStyle = "black";
-                    ctx2d.textAlign = "center";
-                    ctx2d.font = "48px Arial";
-                    ctx2d.fillText(
-                        "Game Over!",
-                        $canvas.width / 2,
-                        $canvas.height / 2
+                function draw() {
+                    canvasHelper.clear();
+                    canvasHelper.drawImage(
+                        backgroundImg,
+                        0,
+                        0,
+                        $canvas.width,
+                        $canvas.height
                     );
-                    ctx2d.font = "24px Arial";
-                    ctx2d.fillText(
-                        "Tap or press Space to restart",
-                        $canvas.width / 2,
-                        $canvas.height / 2 + 40
+                    switch (gameState) {
+                        case GAME_STATE.INIT:
+                            drawInitialScreen();
+                            break;
+                        case GAME_STATE.PLAYING:
+                            drawBasicGame();
+                            break;
+                        case GAME_STATE.FIGHT:
+                            drawBasicGame();
+                            drawFightElements();
+                            break;
+                        case GAME_STATE.WIN:
+                            drawGameOverScreen(true);
+                            break;
+                        case GAME_STATE.LOST:
+                            drawGameOverScreen(false);
+                            break;
+                    }
+                }
+
+                function drawFightElements() {
+                    boss?.draw();
+                    lasers?.forEach((l) => l.draw());
+                    canvasHelper.ctx.fillText(
+                        `Health: ${boss.health}`,
+                        $canvas.width - 140,
+                        30
                     );
                 }
 
-                function gameWin() {
+                function drawBasicGame() {
+                    bird?.draw();
+                    pipes?.forEach((p) => p.draw());
+
+                    canvasHelper.ctx.fillStyle = "black";
+                    canvasHelper.ctx.font = "24px Arial";
+                    canvasHelper.ctx.textAlign = "start";
+                    canvasHelper.ctx.fillText(`Score: ${score}`, 10, 30);
+                }
+
+                function stopGame() {
                     backgroundMusic.pause();
                     bossMusic.pause();
                     gameLoop = null;
-                    ctx2d.fillStyle = "black";
-                    ctx2d.textAlign = "center";
-                    ctx2d.font = "48px Arial";
-                    ctx2d.fillText(
-                        "You Win!",
-                        $canvas.width / 2,
-                        $canvas.height / 2
-                    );
-                    ctx2d.font = "24px Arial";
-                    ctx2d.fillText(
-                        "Tap or press Space to restart",
-                        $canvas.width / 2,
-                        $canvas.height / 2 + 40
-                    );
                 }
 
                 function startGame() {
@@ -281,17 +283,36 @@ import { BASE } from "@/constants";
                 }
 
                 function drawInitialScreen() {
+                    const ctx2d = canvasHelper.ctx;
                     ctx2d.fillStyle = "black";
                     ctx2d.font = "48px Arial";
                     ctx2d.textAlign = "center";
                     ctx2d.fillText(
                         "Buscemi Revenga!",
+                        canvasHelper.width / 2,
+                        canvasHelper.height / 2
+                    );
+                    ctx2d.font = "24px Arial";
+                    ctx2d.fillText(
+                        "Tap or Press Space to start",
+                        canvasHelper.width / 2,
+                        canvasHelper.height / 2 + 40
+                    );
+                }
+
+                function drawGameOverScreen(victory: boolean) {
+                    const ctx2d = canvasHelper.ctx;
+                    ctx2d.fillStyle = "black";
+                    ctx2d.textAlign = "center";
+                    ctx2d.font = "48px Arial";
+                    ctx2d.fillText(
+                        victory ? "You Win!" : "Game Over!",
                         $canvas.width / 2,
                         $canvas.height / 2
                     );
                     ctx2d.font = "24px Arial";
                     ctx2d.fillText(
-                        "Tap or Press Space to start",
+                        "Tap or press Space to restart",
                         $canvas.width / 2,
                         $canvas.height / 2 + 40
                     );
@@ -299,8 +320,10 @@ import { BASE } from "@/constants";
 
                 // Start by showing initial screen
                 resizeCanvas();
+                window.addEventListener("resize", resizeCanvas);
 
                 backgroundImg.onload = () => {
+                    const ctx2d = canvasHelper.ctx;
                     ctx2d.drawImage(
                         backgroundImg,
                         0,

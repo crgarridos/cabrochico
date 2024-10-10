@@ -1,15 +1,10 @@
-import { SolidElement, type GameCanvasContext } from "./GameCanvasContext";
+import { SolidElement, type GameCanvasContext } from "./GameCanvasHelper";
 
 // Boss object
 export class Boss extends SolidElement {
 
     ctx: GameCanvasContext;
     img: CanvasImageSource;
-
-    // x: number;
-    // y: number;
-    // width: number = 75;
-    // height: number = 100;
 
     health:number = 2000;
     maxHealth:number = this.health;
@@ -22,22 +17,6 @@ export class Boss extends SolidElement {
     attackPhase:string = "idle";// 'idle', 'attacking', 'returning'
     nextHealthThreshold:number = 200;// Track health thresholds for attack
 
-
-        // x: baseWidth,
-    // y: baseHeight / 2 - 50,
-    // width: 75,
-    // height: 100,
-    // health: 200,
-    // maxHealth: 2000,
-    // moveAmplitude: 100,
-    // moveSpeed: 0.02,
-    // moveAngle: 0,
-    // initialY: 0,
-    // attackPhase: "idle",
-    // attackSpeed: 200,
-    // initialX: baseWidth,
-    // nextHealthThreshold: 200;
-
     constructor(ctx: GameCanvasContext, img: CanvasImageSource) {
         super({width: 75, height: 100, x: 0, y: 0})
         this.ctx = ctx
@@ -48,10 +27,10 @@ export class Boss extends SolidElement {
     draw() {
         this.ctx.drawImage(
             this.img,
-            this.ctx.scale(this.x),
-            this.ctx.scale(this.y),
-            this.ctx.scale(this.width),
-            this.ctx.scale(this.height)
+            this.x,
+            this.y,
+            this.width,
+            this.height
         );
 
         // Draw health bar
@@ -59,10 +38,10 @@ export class Boss extends SolidElement {
         const healthBarWidth =
             (this.width * this.health) / this.maxHealth;
             this.ctx.fillRect(
-                this.ctx.scale(this.x),
-                this.ctx.scale(this.y - 20),
-                this.ctx.scale(healthBarWidth),
-                this.ctx.scale(10)
+                this.x,
+                this.y - 20,
+                healthBarWidth,
+                10
         );
     }
 
@@ -70,7 +49,7 @@ export class Boss extends SolidElement {
         // Check if health has crossed a threshold
         if (this.attackPhase === "idle") {
             // Regular movement
-            if (this.x > this.ctx.baseWidth - 150) {
+            if (this.x > this.ctx.width - 150) {
                 this.x -= 100 * deltaTime; // Move boss towards center
             } else {
                 this.moveAngle += this.moveSpeed;
@@ -106,11 +85,11 @@ export class Boss extends SolidElement {
     }
 
     reset() {
-        this.x = this.ctx.baseWidth;
-        this.y = this.ctx.baseHeight / 2 - 50;
+        this.x = this.ctx.width;
+        this.y = this.ctx.height / 2 - 50;
         this.health = this.maxHealth;
         this.moveAngle = 0;
-        this.initialX = this.ctx.baseWidth;
+        this.initialX = this.ctx.width;
         this.initialY = this.y;
         this.attackPhase = "idle";
         this.nextHealthThreshold = this.maxHealth - 50;
