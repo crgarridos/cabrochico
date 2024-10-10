@@ -203,15 +203,12 @@ import { BASE } from "@/constants";
                         }
                     }
 
-                    // Draw score
-
-                    draw();
-
                     // Check for  game over
                     if (bird.y + bird.height > $canvas.height || bird.y < 0) {
-                        gameState = GAME_STATE.LOST;
                         stopGame();
+                        gameState = GAME_STATE.LOST;
                     }
+                    draw();
 
                     // Request next frame
                     if (gameLoop) {
@@ -240,9 +237,13 @@ import { BASE } from "@/constants";
                             drawFightElements();
                             break;
                         case GAME_STATE.WIN:
+                            drawBasicGame();
+                            drawFightElements();
                             drawGameOverScreen(true);
                             break;
                         case GAME_STATE.LOST:
+                            drawBasicGame();
+                            drawFightElements();
                             drawGameOverScreen(false);
                             break;
                     }
@@ -251,16 +252,20 @@ import { BASE } from "@/constants";
                 function drawFightElements() {
                     boss?.draw();
                     lasers?.forEach((l) => l.draw());
-                    canvasHelper.ctx.fillText(
-                        `Health: ${boss.health}`,
-                        $canvas.width - 140,
-                        30
-                    );
+                    if (boss) {
+                        canvasHelper.ctx.textAlign = "end";
+                        canvasHelper.ctx.fillStyle = "black";
+                        canvasHelper.ctx.fillText(
+                            `Health: ${boss.health}`,
+                            $canvas.width - 10,
+                            30
+                        );
+                    }
                 }
 
                 function drawBasicGame() {
-                    bird?.draw();
                     pipes?.forEach((p) => p.draw());
+                    bird?.draw();
 
                     canvasHelper.ctx.fillStyle = "black";
                     canvasHelper.ctx.font = "24px Arial";
