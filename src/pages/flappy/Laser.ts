@@ -1,3 +1,4 @@
+import { LASER_DAMAGE } from "./config";
 import { SolidElement, type GameCanvasContext } from "./GameCanvasHelper";
 
 export class Laser extends SolidElement {
@@ -9,7 +10,7 @@ export class Laser extends SolidElement {
         super({width: 20, height: 5, x, y})
         this.ctx = ctx;
         this.speed = 500; // Increased speed
-        this.damage = 10;
+        this.damage = LASER_DAMAGE;
     }
 
     draw() {

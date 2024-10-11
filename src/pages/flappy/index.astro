@@ -23,7 +23,7 @@ import { BASE } from "@/constants";
             import { Pipe } from "./Pipe";
             import { Bird } from "./Bird";
             import { Laser } from "./Laser";
-            import { SCORE_TO_BOSS } from "./config";
+            import { DISABLE_GAMEOVER, SCORE_TO_BOSS } from "./config";
 
             document.addEventListener("DOMContentLoaded", () => {
                 const $canvas = document.getElementById(
@@ -144,11 +144,12 @@ import { BASE } from "@/constants";
                         }
 
                         if (
+                            !DISABLE_GAMEOVER &&
                             bird.x < pipe.x + pipe.width &&
                             bird.x + bird.width > pipe.x &&
                             (bird.y < pipe.topY ||
                                 bird.y + bird.height > pipe.bottomY)
-                                // TODO use isCollisioningWith, but we need to rework pipes to be two separated elements
+                            // TODO use isCollisioningWith, but we need to rework pipes to be two separated elements
                         ) {
                             gameState = GAME_STATE.LOST;
                             stopGame();
@@ -178,7 +179,7 @@ import { BASE } from "@/constants";
                             }
                         });
 
-                        if (bird.isCollitioningWith(boss)) {
+                        if (!DISABLE_GAMEOVER && bird.isCollitioningWith(boss)) {
                             stopGame();
                             gameState = GAME_STATE.LOST;
                         }
@@ -191,7 +192,10 @@ import { BASE } from "@/constants";
                     }
 
                     // Check for  game over
-                    if (bird.y + bird.height > $canvas.height || bird.y < 0) {
+                    if (!DISABLE_GAMEOVER &&
+                        (bird.y + bird.height > $canvas.height ||
+                        bird.y < 0)
+                    ) {
                         stopGame();
                         gameState = GAME_STATE.LOST;
                     }
