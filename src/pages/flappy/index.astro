@@ -100,7 +100,7 @@ import { BASE } from "@/constants";
 
                         bird.jump();
 
-                        if (boss && gameLoop ) {
+                        if (boss && gameLoop) {
                             laserMusic.play();
                             lasers.push(bird.shoot());
                         }
@@ -149,6 +149,7 @@ import { BASE } from "@/constants";
                             bird.x + bird.width > pipe.x &&
                             (bird.y < pipe.topY ||
                                 bird.y + bird.height > pipe.bottomY)
+                                // TODO use isCollisioningWith, but we need to rework pipes to be two separated elements
                         ) {
                             gameState = GAME_STATE.LOST;
                             stopGame();
@@ -173,25 +174,13 @@ import { BASE } from "@/constants";
                                 lasers.splice(index, 1);
                             }
 
-                            // Check for collision with boss
-                            if (
-                                laser.x < boss.x + boss.width &&
-                                laser.x + laser.width > boss.x &&
-                                laser.y < boss.y + boss.height &&
-                                laser.y + laser.height > boss.y
-                            ) {
+                            if (laser.isCollitioningWith(boss)) {
                                 boss.health -= laser.damage;
                                 lasers.splice(index, 1);
                             }
                         });
 
-                        // Check if the bounding boxes of the bird and boss overlap
-                        if (
-                            bird.x < boss.x + boss.width &&
-                            bird.x + bird.width > boss.x &&
-                            bird.y < boss.y + boss.height &&
-                            bird.y + bird.height > boss.y
-                        ) {
+                        if (bird.isCollitioningWith(boss)) {
                             stopGame();
                             gameState = GAME_STATE.LOST;
                         }
@@ -278,8 +267,8 @@ import { BASE } from "@/constants";
                     bossMusic.pause();
                     gameLoop = null;
                     setTimeout(() => {
-                        addStartGameListeners()
-                    }, 1500)
+                        addStartGameListeners();
+                    }, 1500);
                 }
 
                 function startGame() {

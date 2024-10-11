@@ -16,6 +16,13 @@
         this.x = values.x;
         this.y = values.y;
     }
+
+    isCollitioningWith(element: SolidElement): boolean {
+        return this.x < element.x + element.width &&
+        this.x + this.width > element.x &&
+        this.y < element.y + element.height &&
+        this.y + this.height > element.y
+    }
 }
 
 export class GameCanvasContext {
