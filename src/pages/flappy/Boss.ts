@@ -1,8 +1,6 @@
+import { ATTACK_THRESHOLD_STEP } from "./config";
 import { SolidElement, type GameCanvasContext } from "./GameCanvasHelper";
 
-// Boss object
-
-const ATTACK_THRESHOLD_STEP = 100
 export class Boss extends SolidElement {
 
     ctx: GameCanvasContext;
@@ -11,7 +9,7 @@ export class Boss extends SolidElement {
 
     health:number = 2000;
     maxHealth:number = this.health;
-    moveAmplitude:number = 100;
+    moveAmplitude:number = 250;
     moveSpeed:number = 0.02;
     moveAngle:number = 0;
     initialX:number = 0;
@@ -30,7 +28,7 @@ export class Boss extends SolidElement {
         this.y = this.ctx.height / 2 - 50;
         this.health = this.maxHealth;
         this.moveAngle = 0;
-        this.initialX = this.ctx.width;
+        this.initialX = this.ctx.width - this.width -  30;
         this.initialY = this.y;
         this.attackPhase = "idle";
         this.nextHealthThreshold = this.maxHealth - ATTACK_THRESHOLD_STEP ;
@@ -61,7 +59,7 @@ export class Boss extends SolidElement {
         // Check if health has crossed a threshold
         if (this.attackPhase === "idle") {
             // Regular movement
-            if (this.x > this.ctx.width - 150) {
+            if (this.x > this.initialX) {
                 this.x -= 100 * deltaTime; // Move boss towards center
             } else {
                 this.moveAngle += this.moveSpeed;

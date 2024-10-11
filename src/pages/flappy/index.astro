@@ -23,6 +23,7 @@ import { BASE } from "@/constants";
             import { Pipe } from "./Pipe";
             import { Bird } from "./Bird";
             import { Laser } from "./Laser";
+            import { SCORE_TO_BOSS } from "./config";
 
             document.addEventListener("DOMContentLoaded", () => {
                 const $canvas = document.getElementById(
@@ -46,8 +47,6 @@ import { BASE } from "@/constants";
                 let gameLoop: number;
                 let lastFrameTime = 0;
                 let gameState = GAME_STATE.INIT;
-
-                const SCORE_TO_BOSS = 5;
 
                 const backgroundMusic = new Audio(
                     `${BASE_DIR}/img/game/muffled-party-music.mp3`
