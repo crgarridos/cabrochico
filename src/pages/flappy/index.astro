@@ -132,7 +132,7 @@ import { BASE } from "@/constants";
                     if (
                         score < SCORE_TO_BOSS &&
                         (pipes.length == 0 ||
-                            pipes[pipes.length - 1].x <= $canvas.width / 2)
+                            pipes[pipes.length - 1].x <= $canvas.width * .4)
                     ) {
                         pipes.push(new Pipe(canvasHelper, pipeImg));
                     }
@@ -224,17 +224,17 @@ import { BASE } from "@/constants";
                             drawBasicGame();
                             break;
                         case GAME_STATE.FIGHT:
-                            drawBasicGame();
                             drawFightElements();
+                            drawBasicGame();
                             break;
                         case GAME_STATE.WIN:
-                            drawBasicGame();
                             drawFightElements();
+                            drawBasicGame();
                             drawGameOverScreen(true);
                             break;
                         case GAME_STATE.LOST:
+                              drawFightElements();
                             drawBasicGame();
-                            drawFightElements();
                             drawGameOverScreen(false);
                             break;
                     }
