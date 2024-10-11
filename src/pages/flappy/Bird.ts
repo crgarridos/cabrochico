@@ -11,7 +11,7 @@ export class Bird extends SolidElement {
     jumpStrength:number = -7;
 
     constructor(ctx: GameCanvasContext, img: CanvasImageSource) {
-        super({width: 20, height: 15, x: 50, y: 300})
+        super({width: 30, height: 23 , x: 50, y: 300})
         this.ctx = ctx;
         this.img = img;
     }

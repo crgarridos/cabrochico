@@ -10,11 +10,11 @@ export class Boss extends SolidElement {
     health:number = 2000;
     maxHealth:number = this.health;
     moveAmplitude:number = 250;
-    moveSpeed:number = 0.02;
+    moveSpeed:number = 0.01;// TODO play with these values depending on the health??
     moveAngle:number = 0;
     initialX:number = 0;
     initialY:number = 0;
-    attackSpeed:number = 200;// Speed of the boss during the attack
+    attackSpeed:number = 300;// Speed of the boss during the attack
     attackPhase:string;// 'idle', 'attacking', 'returning'
     nextHealthThreshold:number;// Track health thresholds for attack
 
