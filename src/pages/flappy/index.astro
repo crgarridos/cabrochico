@@ -158,13 +158,12 @@ import { BASE } from "@/constants";
 
                     // Boss fight
                     if (score >= SCORE_TO_BOSS && !boss) {
-                        boss = new Boss(canvasHelper, bossImg);
-                        boss.reset();
+                        bossMusic.play();
+                        backgroundMusic.pause();
+                        boss = new Boss(canvasHelper, bossImg, toastySound);
                         gameState = GAME_STATE.FIGHT;
                     }
                     if (boss) {
-                        backgroundMusic.pause();
-                        bossMusic.play();
                         boss.update(deltaTime);
 
                         // Update and draw lasers

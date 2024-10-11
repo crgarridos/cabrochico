@@ -5,6 +5,7 @@ export class Boss extends SolidElement {
 
     ctx: GameCanvasContext;
     img: CanvasImageSource;
+    toastySound: HTMLAudioElement;
 
     health:number = 2000;
     maxHealth:number = this.health;
@@ -17,11 +18,20 @@ export class Boss extends SolidElement {
     attackPhase:string = "idle";// 'idle', 'attacking', 'returning'
     nextHealthThreshold:number = 200;// Track health thresholds for attack
 
-    constructor(ctx: GameCanvasContext, img: CanvasImageSource) {
+    constructor(ctx: GameCanvasContext, img: CanvasImageSource, toastySound: HTMLAudioElement) {
         super({width: 75, height: 100, x: 0, y: 0})
         this.ctx = ctx
         this.img = img
-        this.reset()
+        this.toastySound = toastySound
+
+        this.x = this.ctx.width;
+        this.y = this.ctx.height / 2 - 50;
+        this.health = this.maxHealth;
+        this.moveAngle = 0;
+        this.initialX = this.ctx.width;
+        this.initialY = this.y;
+        this.attackPhase = "idle";
+        this.nextHealthThreshold = this.maxHealth - 50;
     }
 
     draw() {
@@ -62,7 +72,7 @@ export class Boss extends SolidElement {
             // Check if it's time to attack based on health
             if (this.health <= this.nextHealthThreshold) {
                 this.attackPhase = "attacking";
-                // toastySound.play(); TODO
+                this.toastySound.play();
             }
         }
         if (this.attackPhase === "attacking") {
@@ -82,17 +92,6 @@ export class Boss extends SolidElement {
                 this.attackPhase = "idle";
             }
         }
-    }
-
-    reset() {
-        this.x = this.ctx.width;
-        this.y = this.ctx.height / 2 - 50;
-        this.health = this.maxHealth;
-        this.moveAngle = 0;
-        this.initialX = this.ctx.width;
-        this.initialY = this.y;
-        this.attackPhase = "idle";
-        this.nextHealthThreshold = this.maxHealth - 50;
     }
 
 };
