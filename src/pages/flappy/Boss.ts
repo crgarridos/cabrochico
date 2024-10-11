@@ -1,6 +1,8 @@
 import { SolidElement, type GameCanvasContext } from "./GameCanvasHelper";
 
 // Boss object
+
+const ATTACK_THRESHOLD_STEP = 100
 export class Boss extends SolidElement {
 
     ctx: GameCanvasContext;
@@ -15,8 +17,8 @@ export class Boss extends SolidElement {
     initialX:number = 0;
     initialY:number = 0;
     attackSpeed:number = 200;// Speed of the boss during the attack
-    attackPhase:string = "idle";// 'idle', 'attacking', 'returning'
-    nextHealthThreshold:number = 200;// Track health thresholds for attack
+    attackPhase:string;// 'idle', 'attacking', 'returning'
+    nextHealthThreshold:number;// Track health thresholds for attack
 
     constructor(ctx: GameCanvasContext, img: CanvasImageSource, toastySound: HTMLAudioElement) {
         super({width: 75, height: 100, x: 0, y: 0})
@@ -31,7 +33,7 @@ export class Boss extends SolidElement {
         this.initialX = this.ctx.width;
         this.initialY = this.y;
         this.attackPhase = "idle";
-        this.nextHealthThreshold = this.maxHealth - 50;
+        this.nextHealthThreshold = this.maxHealth - ATTACK_THRESHOLD_STEP ;
     }
 
     draw() {
@@ -81,7 +83,7 @@ export class Boss extends SolidElement {
                 this.x -= this.attackSpeed * deltaTime;
             } else {
                 this.attackPhase = "returning";
-                this.nextHealthThreshold -= 50; // Track health after attack
+                this.nextHealthThreshold -= ATTACK_THRESHOLD_STEP; // Track health after attack
             }
         }
         if (this.attackPhase === "returning") {
