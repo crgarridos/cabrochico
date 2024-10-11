@@ -158,6 +158,7 @@ import { BASE } from "@/constants";
 
                     // Boss fight
                     if (score >= SCORE_TO_BOSS && !boss) {
+                        bossMusic.currentTime = 0;
                         bossMusic.play();
                         backgroundMusic.pause();
                         boss = new Boss(canvasHelper, bossImg, toastySound);
@@ -277,6 +278,7 @@ import { BASE } from "@/constants";
                     if (!gameLoop) {
                         init();
                         gameLoop = requestAnimationFrame(update);
+                        backgroundMusic.currentTime = 0;
                         backgroundMusic.play();
                     }
                 }
