@@ -82,8 +82,9 @@ export class Boss extends SolidElement {
             } else {
                 this.attackPhase = "returning";
                 this.nextHealthThreshold -= ATTACK_THRESHOLD_STEP; // Track health after attack
-                this.moveSpeed += 0.003
-                this.attackSpeed += 25
+                const lostHealthPercentage = (this.maxHealth - this.health) / this.maxHealth
+                this.moveSpeed = Math.max(this.moveSpeed, lostHealthPercentage * 0.05)
+                this.attackSpeed = Math.max(this.attackSpeed, lostHealthPercentage * 1000)
             }
         }
         if (this.attackPhase === "returning") {
