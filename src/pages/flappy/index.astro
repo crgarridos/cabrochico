@@ -81,9 +81,29 @@ import { BASE } from "@/constants";
                     draw();
                 }
 
+                // Handle input for both keyboard and touch events
+                function handleInput(e: Event) {
+                    e.preventDefault();
+
+                    bird.jump();
+
+                    if (boss && gameLoop) {
+                        laserMusic.play();
+                        lasers.push(bird.shoot());
+                    }
+                }
+
+                function handleKeyboardInput(e: KeyboardEvent) {
+                    if (e.code === "Space") {
+                        handleInput(e);
+                    }
+                }
+
                 // Game initialization
                 function init() {
                     removeStartGameListeners();
+                    document.removeEventListener("keydown", handleKeyboardInput);
+                    $canvas.removeEventListener("touchstart", handleInput);
 
                     bird = new Bird(canvasHelper, birdImg);
                     pipes = [];
@@ -93,24 +113,8 @@ import { BASE } from "@/constants";
                     lastFrameTime = performance.now();
                     gameState = GAME_STATE.PLAYING;
 
-                    // Handle input for both keyboard and touch events
-                    function handleInput(e: KeyboardEvent) {
-                        e.preventDefault();
-
-                        bird.jump();
-
-                        if (boss && gameLoop) {
-                            laserMusic.play();
-                            lasers.push(bird.shoot());
-                        }
-                    }
-
                     // Event listener for keyboard (desktop)
-                    document.addEventListener("keydown", (e) => {
-                        if (e.code === "Space") {
-                            handleInput(e);
-                        }
-                    });
+                    document.addEventListener("keydown", handleKeyboardInput);
 
                     // Event listener for touch (mobile)
                     $canvas.addEventListener("touchstart", handleInput);
@@ -132,7 +136,7 @@ import { BASE } from "@/constants";
                     if (
                         score < SCORE_TO_BOSS &&
                         (pipes.length == 0 ||
-                            pipes[pipes.length - 1].x <= $canvas.width * .4)
+                            pipes[pipes.length - 1].x <= $canvas.width * 0.4)
                     ) {
                         pipes.push(new Pipe(canvasHelper, pipeImg));
                     }
@@ -180,7 +184,10 @@ import { BASE } from "@/constants";
                             }
                         });
 
-                        if (!DISABLE_GAMEOVER && bird.isCollitioningWith(boss)) {
+                        if (
+                            !DISABLE_GAMEOVER &&
+                            bird.isCollitioningWith(boss)
+                        ) {
                             stopGame();
                             gameState = GAME_STATE.LOST;
                         }
@@ -193,9 +200,9 @@ import { BASE } from "@/constants";
                     }
 
                     // Check for  game over
-                    if (!DISABLE_GAMEOVER &&
-                        (bird.y + bird.height > $canvas.height ||
-                        bird.y < 0)
+                    if (
+                        !DISABLE_GAMEOVER &&
+                        (bird.y + bird.height > $canvas.height || bird.y < 0)
                     ) {
                         stopGame();
                         gameState = GAME_STATE.LOST;
@@ -234,7 +241,7 @@ import { BASE } from "@/constants";
                             drawGameOverScreen(true);
                             break;
                         case GAME_STATE.LOST:
-                              drawFightElements();
+                            drawFightElements();
                             drawBasicGame();
                             drawGameOverScreen(false);
                             break;
